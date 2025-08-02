@@ -37,9 +37,19 @@
           form.uname.style.borderColor = 'red';
         }
 
+        if (form.pword.value === '') {
+          errors.push('Password is empty.');
+          form.pword.style.borderColor = 'red';
+        }
+
         if (form.pword.value.length < 8) {
           errors.push('Password must be at least 8 characters long.');
           form.pword.style.borderColor = 'red';
+        }
+
+        if (form.pword_conf.value === '') {
+          errors.push('Confirm password is empty.');
+          form.pword_conf.style.borderColor = 'red';
         }
 
         if (form.pword.value != form.pword_conf.value) {
@@ -47,7 +57,6 @@
           form.pword.style.borderColor = 'red';
           form.pword_conf.style.borderColor = 'red';
         }
-
 
         if (form.dob.value === "") {
           errors.push('Date of birth not specified.');

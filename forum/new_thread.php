@@ -1,16 +1,34 @@
 <?php
-// This code checks if the $_POST variable (which contains form data submitted using the POST method)
-// contains a key of 'submit' (the name of the submit button), and if so it prints the form data.
-if (isset($_POST['submit']))
-{
-  echo '<h3>Form submitted successfully!</strong></h3>';
+  if (isset($_POST["submit"])) {
+    $errors = [];
 
-  // The <pre> tags ensure that the layout/whitespace is preserved, for easy reading.
-  // See https://www.php.net/manual/en/function.print-r.php for details about print_r().
-  echo '<pre>';
-  print_r($_POST);
-  echo '</pre>';
-}
+    // trim all input values
+    $title = trim($_POST["title"]) ?? "";
+    $content = trim($_POST["content"]) ?? "";
+    $forum = trim($_POST["forum"]) ?? "";
 
-// If the form has not been submitted, the PHP doesn't do/display anything...
+    if ($title === "") {
+      $errors[] = "Title is empty.";
+    }
+
+    if ($content === "") {
+      $errors[] = "Content is empty.";
+    }
+
+    if ($forum === "") {
+      $errors[] = "Forum is empty.";
+    }
+
+    if ($errors){
+      foreach ($errors as $error) {
+        echo "<p>".$error."</p>";
+      }
+    
+      echo '<a href="javascript: window.history.back()">Return to form</a>';
+    } else {
+      echo "Validation successful!";
+    }
+  } else {
+    echo 'Please submit the <a href="new_thread_form.php">form</a>.';
+  }
 ?>
