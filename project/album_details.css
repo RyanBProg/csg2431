@@ -1,0 +1,79 @@
+main {
+  padding: 50px 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.column-container {
+  display: flex;
+  justify-content: space-between;
+
+  & aside {
+    width: 300px;
+  }
+}
+
+.comment-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & li {
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+}
+
+.rating-list {
+  display: flex;
+  gap: 15px;
+}
+
+.track-list {
+  display: grid;
+  gap: 5px;
+  margin-left: 30px;
+}
+
+.member-comments-title {
+  margin-top: 20px;
+}
+
+.comment-details {
+  display: flex;
+  gap: 5px;
+}
+
+.star-rating,
+.comment-fieldset {
+  padding: 10px;
+  border-radius: 10px;
+
+  & legend {
+    padding: 0 5px;
+    font-weight: 500;
+  }
+
+  & input[type="submit"] {
+    margin-top: 10px;
+  }
+}
+
+.comment-fieldset {
+  margin-top: 10px;
+
+  & textarea {
+    width: 100%;
+    resize: vertical;
+  }
+}
+
+.delete-button {
+  margin-top: 20px;
+  background-color: red;
+  border: 1px solid red;
+}
