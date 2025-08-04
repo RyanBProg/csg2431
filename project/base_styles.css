@@ -1,7 +1,7 @@
 :root {
   --black: #000000;
-  --gray: #666666;
-  --accent: #4a90e6;
+  --gray: #ebebeb;
+  --accent: #16a25e;
   --white: #ffffff;
 }
 
@@ -40,18 +40,23 @@ h6 {
 h1 {
   font-size: 2.5rem;
 }
+
 h2 {
   font-size: 2rem;
 }
+
 h3 {
   font-size: 1.75rem;
 }
+
 h4 {
   font-size: 1.5rem;
 }
+
 h5 {
   font-size: 1.25rem;
 }
+
 h6 {
   font-size: 1rem;
 }
@@ -64,9 +69,14 @@ a {
   color: var(--accent);
   text-decoration: none;
   transition: color 0.2s ease;
+  line-height: normal;
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &:focus {
+    opacity: 0.7;
   }
 }
 
@@ -82,41 +92,69 @@ a {
 
   &:hover {
     cursor: pointer;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    opacity: 0.7;
   }
 }
 
-.button:hover {
-  opacity: 0.7;
-}
-
-/* nav */
-nav {
+/* navbar */
+header {
   width: 100vw;
   background-color: var(--gray);
   padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  & ul {
-    display: flex;
-    gap: 10px;
-    list-style: none;
+  & nav {
+    & ul {
+      display: flex;
+      gap: 10px;
+      list-style: none;
 
-    & a {
-      color: var(--black);
-      background-color: var(--white);
-      padding: 5px 10px;
-      border-radius: 5px;
+      & a {
+        color: var(--black);
+        background-color: var(--white);
+        padding: 5px 10px;
+        border-radius: 5px;
 
-      &:hover {
-        text-decoration: none;
-        opacity: 0.7;
+        &:hover {
+          text-decoration: none;
+          opacity: 0.7;
+        }
       }
+    }
+  }
+
+  & .searchbar {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+    & label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    & input {
+      margin: 0;
     }
   }
 }
 
 /* forms */
-form {
-  background-color: rgb(235, 235, 235);
+.form {
+  background-color: var(--gray);
   padding: 20px;
   border-radius: 10px;
   width: 500px;
@@ -144,13 +182,11 @@ select {
   border: 1px solid var(--gray);
   border-radius: 5px;
   font-size: 1rem;
-}
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--accent);
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
 }
 
 input[type="date"]:hover {

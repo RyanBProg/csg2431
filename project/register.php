@@ -9,16 +9,27 @@
     <link rel="stylesheet" type="text/css" href="base_styles.css" />
     <link rel="stylesheet" type="text/css" href="login_register.css" />
     <script defer src="register.js"></script>
+    <script defer src="search.js"></script>
   </head>
   <body>
     <header>
       <nav>
         <ul>
-          <li><a href="home.php">Home</a></li>
-          <li><a href="login.php">Login</a></li>
-          <li><a href="register.php">Register</a></li>
+          <li><a class="button" href="album_list.php">Albums</a></li>
+          <li><a class="button" href="login.php">Login</a></li>
+          <li><a class="button" href="register.php">Register</a></li>
         </ul>
       </nav>
+      <form
+        name="search_form"
+        class="searchbar"
+        method="post"
+        action="search_handler.php"
+        onsubmit="return validateSearch()">
+        <label for="search">Search Albums</label>
+        <input id="search" name="search" type="text" placeholder="Search Albums...">
+        <input class="button" type="submit" name="submit" value="Submit" />
+      </form>
     </header>
     <main>
       <h1>Register Form</h1>
@@ -28,6 +39,7 @@
         </a>
       </span>
       <form
+        class="form"
         name="register_form"
         method="post"
         action="register_handler.php"
@@ -63,7 +75,7 @@
             terms and conditions
           </a>
         </label>
-        <input class="button" type="submit" name="submit" value="Submit" />
+        <input class="button submit-button" type="submit" name="submit" value="Submit" />
       </form>
     </main>
   </body>

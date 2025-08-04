@@ -1,5 +1,5 @@
 function validateForm() {
-  const form = document.create_form;
+  const form = document.register_form;
   const errors = [];
 
   form.uname.style.borderColor = "";
@@ -16,6 +16,7 @@ function validateForm() {
   form.pword_conf.value = form.pword_conf.value.trim();
   form.profile.value = form.profile.value.trim();
 
+  // username checks
   if (form.uname.value === "") {
     errors.push("Username is empty.");
     form.uname.style.borderColor = "red";
@@ -33,15 +34,25 @@ function validateForm() {
     form.uname.style.borderColor = "red";
   }
 
-  // check email
+  // email checks
+  if (form.email.value === "") {
+    errors.push("Email is empty.");
+    form.email.style.borderColor = "red";
+  }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value)) {
+    errors.push("Invalid email format.");
+    form.email.style.borderColor = "red";
+  }
+
+  // password checks
   if (form.pword.value === "") {
     errors.push("Password is empty.");
     form.pword.style.borderColor = "red";
   }
 
-  if (form.pword.value.length < 8) {
-    errors.push("Password must be at least 8 characters long.");
+  if (form.pword.value.length < 5) {
+    errors.push("Password must be at least 5 characters long.");
     form.pword.style.borderColor = "red";
   }
 
@@ -56,6 +67,7 @@ function validateForm() {
     form.pword_conf.style.borderColor = "red";
   }
 
+  // date of birth checks
   if (form.dob.value === "") {
     errors.push("Date of birth not specified.");
     form.dob.style.borderColor = "red";
@@ -78,8 +90,6 @@ function validateForm() {
       form.dob.style.borderColor = "red";
     }
   }
-
-  // check profile
 
   if (!form.agree.checked) {
     errors.push("You must agree to the terms and conditions.");

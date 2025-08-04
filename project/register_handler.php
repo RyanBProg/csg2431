@@ -4,11 +4,13 @@
 
     // trim all input values
     $username = trim($_POST["uname"]) ?? "";
+    $email = trim($_POST["email"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
     $conf_password = trim($_POST["pword_conf"]) ?? "";
-    $real_name = trim($_POST["real_name"]) ?? "";
+    $profile = trim($POST["profile"]) ?? "";
     $dob = $_POST["dob"];
 
+    // username checks
     if ($username === "") {
       $errors[] = "Username is empty.";
     }
@@ -21,6 +23,16 @@
       $errors[] = "Username must be between 6 and 20 characters long.";
     }
 
+    // email checks
+    if ($email === "") {
+      $errors[] = "Email is empty.";
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $errors[] = "Invalid email format.";
+    }
+
+    // password checks
     if ($password === "") {
       $errors[] = "Password is empty.";
     }
@@ -37,6 +49,7 @@
       $errors[] = "Password and confirm password must match.";
     }
 
+    // date of birth checks
     if ($dob === "") {
       $errors[] = "Date of birth is empty.";
     }
