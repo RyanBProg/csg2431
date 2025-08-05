@@ -1,4 +1,6 @@
 <?php
+  require 'db_connect.php';
+  
   // Handle rating submission
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
     $rating = htmlspecialchars($_POST['rating']);

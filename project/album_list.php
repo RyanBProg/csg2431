@@ -1,3 +1,7 @@
+<?php
+  require 'db_connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,16 +40,42 @@
         <label>
           Order by
           <select name="order">
-            <option value="name" selected>Name</option>
+            <option value="title" selected>Name</option>
             <option value="artist">Artist</option>
-            <option value="year">Year</option>
+            <option value="release_date">Year</option>
           </select>
         </label>
       </form>
       <ul class="album-list">
-        <li><a href="album_details.php">Marvin Gaye, "What's Going On" (1971)</a></li>
-        <li><a href="#">Stevie Wonder, "For Once In My Life" (1968)</a></li>
-        <li><a href="#">Khruangbin, "Texas Moon" (2022)</a></li>
+        <?php
+          if (isset($_GET['order_by'])) {
+            $stmt = $db->prepare("SELECT album_id, title, artist, YEAR(release_date) AS release_year
+                                  FROM album
+                                  ORDER BY ? DESC");
+
+            $stmt->execute( [$_GET['order_by']] );
+          } else {
+            $stmt = $db->prepare("SELECT album_id, title, artist, YEAR(release_date) AS release_year
+                                  FROM album
+                                  ORDER BY title DESC");
+                                  
+            $stmt->execute();
+          }
+
+          $records_data = $stmt->fetchAll();
+          
+          if (count($records_data) > 0) {
+            foreach($records_data as $row) {
+              echo '<li><a href="album_details.php?id='.$row['album_id'].'">
+              '.$row['title'].', 
+              "'.$row['artist'].'" 
+              ('.$row['release_year'].')
+              </a></li>';
+            }
+          } else {
+            echo '<p>No albums found.</p>';
+          }
+        ?>
       </ul>
     </main>
   </body>

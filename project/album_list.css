@@ -7,7 +7,7 @@ h1 {
 }
 
 .album-list {
-  margin-left: 30px;
+  margin: 20px 0 0 30px;
   display: grid;
   gap: 5px;
 }
