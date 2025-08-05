@@ -1,4 +1,6 @@
 <?php
+  require 'db_connect.php';
+
   if (isset($_POST["submit"])) {
     $errors = [];
 
@@ -44,7 +46,22 @@
     
       echo '<a href="javascript: window.history.back()">Return to form</a>';
     } else {
-      echo "Validation successful!";
+      $stmt = $db->prepare("INSERT INTO user (username, password, real_name, dob) 
+                            VALUES (?, ?, ?, ?)");
+      $result = $stmt->execute( [$username, $password, $real_name, $dob] );
+
+      if ($result) {
+        echo "<p>Registration complete!</p>";
+        echo "<a href='login.php'>Log in</a>";
+      } else if ($stmt->errorCode() === "23000") {
+        echo '<p>Username "'.$_POST['uname'].'" already taken</p>';
+        echo '<a href="javascript: window.history.back()">Return to form</a>';
+        // print_r($stmt->errorInfo());
+      } else {
+        echo "<p>Something went wrong.</p>";
+        echo '<a href="javascript: window.history.back()">Return to form</a>';
+        // print_r($stmt->errorInfo());
+      }
     }
   } else {
     echo 'Please submit the <a href="register_form.php">form</a>.';

@@ -1,5 +1,7 @@
 <?php
   require 'db_connect.php';
+
+  $PLACEHOLDER = "jbloggs";
   
   if (!isset($_GET['id']) || !ctype_digit($_GET['id']))
   { // If there is no "id" URL data or it isn't a number
@@ -43,8 +45,12 @@
       echo '<p><small><em>Posted by <a href="view_profile.php?username='.$thread['username'].'">'.$thread['username'].'</a>
       in <a href="list_threads.php?forum_id='.$thread['forum_id'].'">'.$thread['forum_name'].'</a>
       on '.date('d M Y, H:i', $thread['post_date']).'
-      </small></p>';
-	  
+      </em></small></p>';
+
+      if ($PLACEHOLDER === $thread['username']) {
+        echo '<a href="edit_thread_form.php?id='.$thread['thread_id'].'">Edit</a> | <a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.$thread['thread_id'].'">Delete</a>';
+      }
+
       echo '<p>'.nl2br(htmlentities($thread['content'])).'</p>';
     ?>
   </body>
