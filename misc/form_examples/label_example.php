@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Label Example</title>
-    <meta name="author" content="Greg Baatard" />
+    <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Example of the label tag" />
   </head>
 

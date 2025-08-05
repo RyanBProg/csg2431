@@ -18,7 +18,7 @@ if (isset($_POST['submit']))
 <html>
   <head>
    <title>New Thread</title>
-   <meta name="author" content="Greg Baatard" />
+   <meta name="author" content="Ryan Bowler" />
    <meta name="description" content="Example of a new forum thread form." />
   </head>
 

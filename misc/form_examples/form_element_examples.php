@@ -18,7 +18,7 @@ if (isset($_POST['submit']))
 <html>
   <head>
     <title>Form Element Examples</title>
-    <meta name="author" content="Greg Baatard" />
+    <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Examples of various form elements" />
     <style>
       h3 {margin-top: 40px;}

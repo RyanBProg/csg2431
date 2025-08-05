@@ -5,7 +5,7 @@
     // trim all input values
     $title = trim($_POST["title"]) ?? "";
     $content = trim($_POST["content"]) ?? "";
-    $forum = trim($_POST["forum"]) ?? "";
+    $forum_id = trim($_POST["forum_id"]) ?? "";
 
     if ($title === "") {
       $errors[] = "Title is empty.";
@@ -15,7 +15,7 @@
       $errors[] = "Content is empty.";
     }
 
-    if ($forum === "") {
+    if ($forum_id === "") {
       $errors[] = "Forum is empty.";
     }
 

@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Fieldset Example</title>
-    <meta name="author" content="Greg Baatard" />
+    <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Example of the fieldset and legend tags" />
     <style>
       fieldset {width: 350px;}

@@ -18,7 +18,7 @@ if (isset($_POST['submit']))
 <html>
   <head>
     <title>Client-Side Form Validation Example (JavaScript)</title>
-    <meta name="author" content="Greg Baatard" />
+    <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Example of client-side form validation in JavaScript" />
     <link rel="stylesheet" type="text/css" href="validation_stylesheet.css" />
     <script>

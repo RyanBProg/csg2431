@@ -1,3 +1,7 @@
+<?php
+  require 'db_connect.php';
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -44,6 +48,7 @@
 
   <body>
     <h1>New Thread</h1> 
+    <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
     <form name="new_thread" method="post" action="new_thread.php" onsubmit="return validateForm()">
 	
       <label for="title"><strong>Title:</strong></label>
@@ -56,11 +61,18 @@
 
       <div class="forum-group">
         <label for="forum"><strong>Select Forum:</strong></label>
-        <select id="forum" name="forum">
-          <option value="" selected disabled>Select a Forum</option>
-          <option value="1">General Discussion</option>
-          <option value="2">News and Events</option>
-          <option value="3">Videos and Images</option>
+        <select id="forum" name="forum_id">
+          <option value="" selected disabled>Select a forum</option>
+          <?php  
+            // Select details of all forums
+            $result = $db->query("SELECT * FROM forum ORDER BY forum_id");
+      
+            // Loop through each forum to generate an option of the drop-down list
+            foreach($result as $row)
+            {
+              echo '<option value="'.$row['forum_id'].'">'.$row['forum_name'].'</option>';
+            }
+          ?>
         </select>
       </div>
 	
