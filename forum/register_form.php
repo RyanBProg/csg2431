@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="register_styles.css" />
     <script defer>
       function validateForm() {
-        const form = document.create_form;
+        const form = document.register_form;
         const errors = [];
 
         form.uname.style.borderColor = '';
@@ -22,8 +22,8 @@
         form.pword_conf.value = form.pword_conf.value.trim();
         form.real_name.value = form.real_name.value.trim();
 
-        if (form.uname.value === '') {
-          errors.push('Username is empty.');
+        if (form.uname.value.length < 6 || form.uname.value.length > 20) {
+          errors.push('Username must be between 6 and 20 characters long.');
           form.uname.style.borderColor = 'red';
         }
 
@@ -32,24 +32,9 @@
           form.uname.style.borderColor = 'red';
         }
 
-        if (form.uname.value.length < 6 || form.uname.value.length > 20) {
-          errors.push('Username must be between 6 and 20 characters long.');
-          form.uname.style.borderColor = 'red';
-        }
-
-        if (form.pword.value === '') {
-          errors.push('Password is empty.');
-          form.pword.style.borderColor = 'red';
-        }
-
         if (form.pword.value.length < 8) {
           errors.push('Password must be at least 8 characters long.');
           form.pword.style.borderColor = 'red';
-        }
-
-        if (form.pword_conf.value === '') {
-          errors.push('Confirm password is empty.');
-          form.pword_conf.style.borderColor = 'red';
         }
 
         if (form.pword.value != form.pword_conf.value) {
@@ -94,7 +79,8 @@
   </head>
   <body>
     <h3>Create Account</h3>
-    <form name="create_form" method="post" action="register.php" onsubmit="return validateForm()">
+    <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
+    <form name="register_form" method="post" action="register.php" onsubmit="return validateForm()">
 
       <fieldset>
         <legend>User Credentials</legend>

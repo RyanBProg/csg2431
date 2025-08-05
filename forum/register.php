@@ -9,48 +9,28 @@
     $real_name = trim($_POST["real_name"]) ?? "";
     $dob = $_POST["dob"];
 
-    if ($username === "") {
-      $errors[] = "Username is empty.";
+    if (strlen($username) < 6 || strlen($username) > 20) {
+      $errors[] = "Username must be between 6 and 20 characters long.";
     }
 
     if (!ctype_alnum($username)) {
       $errors[] = "Username may only contain letters and numbers (no spaces or symbols).";
     }
 
-    if (strlen($username) < 6 || strlen($username) > 20) {
-      $errors[] = "Username must be between 6 and 20 characters long.";
-    }
-
-    if ($password === "") {
-      $errors[] = "Password is empty.";
-    }
-
     if (strlen($password) < 8) {
       $errors[] = "Password must be at least 8 characters long.";
-    }
-
-    if ($conf_password === "") {
-      $errors[] = "Confirm Password is empty.";
     }
 
     if ($conf_password !== $password) {
       $errors[] = "Password and confirm password must match.";
     }
 
-    if ($dob === "") {
-      $errors[] = "Date of birth is empty.";
+    if (strtotime($_POST['dob']) === false) {
+      $errors[] = 'Invalid date of birth.';
     }
 
-    // check that the user is at least 14 years old
-    $dob_date = DateTime::createFromFormat('Y-m-d', $dob);
-    $today = new DateTime();
-    if (!$dob_date) {
-      $errors[] = "Invalid date of birth format.";
-    } else {
-      $age = $today->diff($dob_date)->y;
-      if ($age < 14) {
-        $errors[] = "You must be at least 14 years old to register.";
-      }
+    if (strtotime($_POST['dob']) > strtotime('-14 years')) {
+      $errors[] = 'You must be at least 14 to register.';
     }
 
     if (!isset($_POST["agree"])) {

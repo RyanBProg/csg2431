@@ -76,7 +76,7 @@
         </select>
       </div>
 	
-      <button value="Submit" type="submit" name="submit">Submit</button>
+      <input type="submit" name="submit" value="Submit" />
     </form>
   </body>
 </html>
