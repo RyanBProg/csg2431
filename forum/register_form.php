@@ -43,26 +43,23 @@
           form.pword_conf.style.borderColor = 'red';
         }
 
+        // date of birth checks
         if (form.dob.value === "") {
-          errors.push('Date of birth not specified.');
-          form.dob.style.borderColor = 'red';
-        }
-
-        // check that the user is at least 14 years old
-        if (form.dob.value !== "") {
+          errors.push("Date of birth not specified.");
+          form.dob.style.borderColor = "red";
+        } else {
           const dob = new Date(form.dob.value);
           const today = new Date();
           let age = today.getFullYear() - dob.getFullYear();
           const m = today.getMonth() - dob.getMonth();
+
           if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
             age--;
           }
-          if (isNaN(dob.getTime())) {
-            errors.push('Invalid date of birth.');
-            form.dob.style.borderColor = 'red';
-          } else if (age < 14) {
-            errors.push('You must be at least 14 years old to register.');
-            form.dob.style.borderColor = 'red';
+
+          if (age < 14) {
+            errors.push("You must be at least 14 years old to register.");
+            form.dob.style.borderColor = "red";
           }
         }
 
