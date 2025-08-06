@@ -1,7 +1,10 @@
 <?php
   require 'db_connect.php';
 
-  $PLACEHOLDER = "jbloggs";
+  if (!isset($_SESSION['username'])) {
+    header('Location: list_threads.php');
+    exit;
+  }
 
   if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
     echo "<p>No thread id provided</p>";
@@ -13,7 +16,7 @@
                         WHERE thread_id = ? AND username = ?
                         ORDER BY post_date DESC");
 
-  $stmt->execute( [$_GET['id'], $PLACEHOLDER] );
+  $stmt->execute( [$_GET['id'], $_SESSION['username']] );
   $thread = $stmt->fetch();
   
   if (!$thread) {
@@ -28,7 +31,7 @@
    <title>Edit Thread</title>
    <meta name="author" content="Ryan Bowler" />
    <meta name="description" content="Edit forum thread form." />
-   <link rel="stylesheet" type="text/css" href="new_thread_styles.css" />
+   <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
    <script defer>
       function validateForm() {
         const form = document.edit_thread;
@@ -70,7 +73,7 @@
     <h1>Edit Thread</h1> 
     <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
     <?php echo '<a style="display: inline-block; margin: 10px 0;" href="view_thread.php?id='.$thread['thread_id'].'"><- Return to thread</a>'; ?>
-    <form name="edit_thread" method="post" action="edit_thread.php" onsubmit="return validateForm()">
+    <form class="thread-form" name="edit_thread" method="post" action="edit_thread.php" onsubmit="return validateForm()">
 	
       <label for="title"><strong>Title:</strong></label>
       <?php echo '<input type="text" id="title" name="title" value="'.$thread['title'].'" />'; ?>

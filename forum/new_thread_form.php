@@ -1,5 +1,10 @@
 <?php
-  require 'db_connect.php';
+  require "db_connect.php";
+
+  if (!isset($_SESSION['username'])) {
+    header('Location: list_threads.php');
+    exit;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +13,7 @@
    <title>New Thread</title>
    <meta name="author" content="Ryan Bowler" />
    <meta name="description" content="New forum thread form." />
-   <link rel="stylesheet" type="text/css" href="new_thread_styles.css" />
+   <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
    <script defer>
       function validateForm() {
         const form = document.new_thread;
@@ -47,9 +52,9 @@
   </head>
 
   <body>
-    <h1>New Thread</h1> 
+    <h3>New Thread</h3> 
     <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
-    <form name="new_thread" method="post" action="new_thread.php" onsubmit="return validateForm()">
+    <form class="thread-form" name="new_thread" method="post" action="new_thread.php" onsubmit="return validateForm()">
 	
       <label for="title"><strong>Title:</strong></label>
       <input type="text" id="title" name="title" />
@@ -68,8 +73,7 @@
             $result = $db->query("SELECT * FROM forum ORDER BY forum_id");
       
             // Loop through each forum to generate an option of the drop-down list
-            foreach($result as $row)
-            {
+            foreach($result as $row) {
               echo '<option value="'.$row['forum_id'].'">'.$row['forum_name'].'</option>';
             }
           ?>

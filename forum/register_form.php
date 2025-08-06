@@ -1,10 +1,19 @@
+<?php
+  require 'db_connect.php';
+  
+  if (isset($_SESSION['username'])) {
+    header('Location: list_threads.php');
+    exit;
+  }
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
     <title>Register Form</title>
     <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Register Form" />
-    <link rel="stylesheet" type="text/css" href="register_styles.css" />
+    <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
     <script defer>
       function validateForm() {
         const form = document.register_form;

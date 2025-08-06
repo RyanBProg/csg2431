@@ -1,6 +1,11 @@
 <?php
   require 'db_connect.php';
 
+  if (!isset($_SESSION['username'])) {
+    header('Location: list_threads.php');
+    exit;
+  }
+
   if (isset($_POST["submit"])) {
     $errors = [];
 
@@ -28,14 +33,13 @@
     
       echo '<a href="javascript: window.history.back()">Return to form</a>';
     } else {
-      $PLACEHOLDER = "jbloggs";
       $stmt = $db->prepare("UPDATE thread
                             SET title = ?, content = ?, forum_id = ?
                             WHERE thread_id = ? AND username = ?");
-      $result = $stmt->execute( [$title, $content, $forum_id, $_POST["thread_id"], $PLACEHOLDER] );
+      $result = $stmt->execute( [$title, $content, $forum_id, $_POST["thread_id"], $_SESSION['username']] );
 
       if ($result) {
-        header("Location: /csg2431/forum/view_thread.php?id=" . $_POST["thread_id"]);
+        header("Location: view_thread.php?id=" . $_POST["thread_id"]);
         exit;
       } else {
         echo "<p>Something went wrong.</p>";

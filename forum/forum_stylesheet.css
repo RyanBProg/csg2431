@@ -2,29 +2,30 @@
 
 /* Change font of all tags to Arial */
 * {
-	font-family: Arial
+  font-family: Arial;
+  box-sizing: border-box;
 }
 
 /* Reduce gap beneath H2 */
 h2 {
-	margin-bottom: -10px;
+  margin-bottom: -10px;
 }
 
 /* Control width and margin of fieldsets */
 fieldset {
-	width: 350px;
-	margin-left: 20px;
-	margin-bottom: 20px;
+  width: 350px;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 /* Make legend text bold */
 legend {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 /* Make superscript tags red */
 sup {
-	color: #FF0000;
+  color: #ff0000;
 }
 
 /* Make labels "blocks" rather than "inline" */
@@ -40,22 +41,54 @@ fieldset span {
 }
 
 /* Set width for text fields, password fields and drop-down lists*/
-input[type="text"], input[type="password"], select {
-	width: 170px
+input[type="text"],
+input[type="password"],
+select {
+  width: 170px;
 }
 
 /* Used to make labels for radio buttons inline, but have margins */
 .radio_label {
-	display: inline-block;
-	margin-right: 15px;
-	margin-bottom: 10px;
+  display: inline-block;
+  margin-right: 15px;
+  margin-bottom: 10px;
 }
 
 /* Used to center things horizontally */
 .middle {
-	display: block;
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 10px;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+/* create/edit thread form */
+.thread-form {
+  width: 350px;
+
+  input,
+  textarea {
+    width: 100%;
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+
+  & .forum-group {
+    margin: 10px 0;
+    display: flex;
+    gap: 4px;
+
+    & label {
+      display: inline;
+      margin-top: 0;
+    }
+
+    & select {
+      flex-grow: 1;
+    }
+  }
 }

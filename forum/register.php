@@ -1,6 +1,11 @@
 <?php
   require 'db_connect.php';
 
+  if (isset($_SESSION['username'])) {
+    header('Location: list_threads.php');
+    exit;
+  }
+
   if (isset($_POST["submit"])) {
     $errors = [];
 
@@ -51,8 +56,18 @@
       $result = $stmt->execute( [$username, $password, $real_name, $dob] );
 
       if ($result) {
-        echo "<p>Registration complete!</p>";
-        echo "<a href='login.php'>Log in</a>";
+        $stmt2 = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");
+        $stmt2->execute([$username]);
+        $user = $stmt2->fetch();
+
+        if ($user) {
+          $_SESSION['username'] = $user['username'];
+          $_SESSION['access_level'] = $user['access_level'];
+          header('Location: list_threads.php');
+          exit;
+        } else {
+          echo "<p>Registration succeeded, but failed to fetch user info.</p>";
+        }
       } else if ($stmt->errorCode() === "23000") {
         echo '<p>Username "'.$_POST['uname'].'" already taken</p>';
         echo '<a href="javascript: window.history.back()">Return to form</a>';

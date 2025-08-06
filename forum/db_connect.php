@@ -1,4 +1,7 @@
 <?php
+  // start or resume a session
+  session_start();
+
   try { 
     $db = new PDO('mysql:host=localhost;port=6033;dbname=iwd_forum', 'root', '');
 	  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);

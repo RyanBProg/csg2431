@@ -12,7 +12,32 @@
 
   <body>
     <h3>Search Threads</h3>
-    <p><a href="list_threads.php">List</a> | <a href="new_thread_form.php">New Thread</a></p>
+
+    <!-- auth -->
+    <?php
+      if (isset($_SESSION['username']) && isset($_SESSION['access_level'])) {
+        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p>
+        <a href="logout.php">Logout</a>';
+      } else {
+        echo '<p style="display: inline; margin-right: 5px;">You are not logged in</p>
+        <a href="login.php">Login</a> | 
+        <a href="register_form.php">Register</a>';
+      }
+    ?>
+
+    <!-- nav -->
+    <?php
+      echo '<div style="margin: 20px 0 30px"><a href="list_threads.php">List</a>';
+
+      if (isset($_SESSION['username'])) {
+        echo ' | <a href="new_thread_form.php">New Thread</a> | 
+        <a href="change_access_level_form.php">Change Access Level</a>
+        </div>';
+      } else {
+        echo '</div>';
+      }
+    ?>
+
     <form name="search_threads" method="get" action="search_threads.php" >
       <p>Search: <input type="text" name="search_term" placeholder="Enter search term..." autofocus /> <input type="submit" value="Submit" /></p>
     </form>

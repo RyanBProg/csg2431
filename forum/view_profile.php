@@ -2,7 +2,7 @@
   require 'db_connect.php';
   
   if (!isset($_GET['username'])) {
-    header('Location: /csg2431/forum/list_threads.php');
+    header('Location: list_threads.php');
     exit;
   }
 
@@ -16,7 +16,7 @@
   $user = $stmt->fetch();
   
   if (!$user) {
-    header('Location: /csg2431/forum/list_threads.php');
+    header('Location: list_threads.php');
     exit;  
   }
 ?>
