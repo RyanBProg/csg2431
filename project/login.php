@@ -1,59 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login | Records</title>
-    <meta name="author" content="Ryan Bowler" />
-    <meta name="description" content="Login Form" />
-    <link rel="stylesheet" type="text/css" href="base_styles.css" />
-    <link rel="stylesheet" type="text/css" href="login_register.css" />
-    <script defer src="login.js"></script>
-    <script defer src="search.js"></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a class="button" href="album_list.php">Albums</a></li>
-          <li><a class="button" href="login.php">Login</a></li>
-          <li><a class="button" href="register.php">Register</a></li>
-        </ul>
-      </nav>
-      <form
-        name="search_form"
-        class="searchbar"
-        method="post"
-        action="search_handler.php"
-        onsubmit="return validateSearch()">
-        <label for="search">Search Albums</label>
-        <input id="search" name="search" type="text" placeholder="Search Albums...">
-        <input class="button" type="submit" name="submit" value="Submit" />
-      </form>
-    </header>
-    <main>
-      <h1>Login Form</h1>
-      <span class="info-link">Don't have an account?
-        <a href="register.php">
-          Register
-        </a>
-      </span>
-      <form
-        class="form"
-        name="login_form"
-        method="post"
-        action="login_handler.php"
-        onsubmit="return validateForm()">
-        <label class="form-label">
-          <span>Email<sup>*</sup>:</span>
-          <input type="email" name="email" autofocus />
-        </label>
-        <label class="form-label">
-          <span>Password<sup>*</sup>:</span>
-          <input type="password" name="pword" />
-        </label>
-        <input class="button submit-button" type="submit" name="submit" value="Submit" />
-      </form>
-    </main>
-  </body>
-</html>
+<?php
+  $page_title = "Login | Records";
+  $page_description = "Login Form for users";
+  require "header.php";
+?>
+
+<main>
+  <h1 class="login-register-title">Login Form</h1>
+  <span class="info-link">Don't have an account?
+    <a href="register.php">
+      Register
+    </a>
+  </span>
+  <form
+    class="form"
+    name="login_form"
+    method="post"
+    action="login_handler.php"
+    onsubmit="return validateLogin()">
+    <label class="form-label">
+      <span>Email<sup>*</sup>:</span>
+      <input type="email" name="email" autofocus />
+    </label>
+    <label class="form-label">
+      <span>Password<sup>*</sup>:</span>
+      <input type="password" name="pword" />
+    </label>
+    <input class="button submit-button" type="submit" name="submit" value="Submit" />
+  </form>
+</main>
+
+<?php
+  require "footer.php"
+?>

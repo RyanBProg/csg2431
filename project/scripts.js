@@ -1,4 +1,31 @@
-function validateForm() {
+function validateLogin() {
+  const form = document.login_form;
+  const errors = [];
+
+  form.email.style.borderColor = "";
+  form.pword.style.borderColor = "";
+
+  // trim all input values and update the input fields with the trimmed values
+  form.email.value = form.email.value.trim();
+  form.pword.value = form.pword.value.trim();
+
+  if (form.email.value === "") {
+    errors.push("Email is empty.");
+    form.email.style.borderColor = "red";
+  }
+
+  if (form.pword.value === "") {
+    errors.push("Password is empty.");
+    form.pword.style.borderColor = "red";
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}
+
+function validateRegister() {
   const form = document.register_form;
   const errors = [];
 
@@ -80,4 +107,57 @@ function validateForm() {
     alert("Form Errors:\n" + errors.join("\n"));
     return false;
   }
+}
+
+function validateSearch() {
+  const form = document.search_form;
+  const errors = [];
+  form.search.style.borderColor = "";
+  form.search.value = form.search.value.trim();
+
+  if (form.search.value === "") {
+    errors.push("Search is empty.");
+    form.search.style.borderColor = "red";
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}
+
+function validateRating() {
+  const form = document.rating_form;
+  const errors = [];
+
+  if (form.rating.value === "") {
+    errors.push("Select a rating.");
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}
+
+function validateComment() {
+  const form = document.comment_form;
+  const errors = [];
+
+  form.comment.value = form.comment.value.trim();
+
+  if (form.comment.value === "") {
+    errors.push("Comment is empty.");
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}
+
+function handleDelete() {
+  return confirm(
+    "Are you sure you want to delete this album? This action cannot be undone."
+  );
 }

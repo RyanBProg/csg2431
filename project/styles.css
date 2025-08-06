@@ -24,8 +24,17 @@ body {
   line-height: 1.6;
   color: var(--black);
   background: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+main {
+  flex-grow: 1;
+  padding: 50px 20px;
+}
+
+/* text */
 h1,
 h2,
 h3,
@@ -59,41 +68,6 @@ h5 {
 
 h6 {
   font-size: 1rem;
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.2s ease;
-  line-height: normal;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus {
-    opacity: 0.7;
-  }
-}
-
-.button {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: 5px;
-  background: var(--accent);
-  color: white;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    cursor: pointer;
-    opacity: 0.7;
-  }
-
-  &:focus {
-    opacity: 0.7;
-  }
 }
 
 /* navbar */
@@ -143,8 +117,18 @@ header {
   }
 }
 
+/* footer */
+footer {
+  width: 100vw;
+  background-color: var(--gray);
+  padding: 15px 10px;
+  display: flex;
+  justify-content: center;
+}
+
 /* forms */
 .form {
+  margin: 0 auto;
   background-color: var(--gray);
   padding: 20px;
   border-radius: 10px;
@@ -182,4 +166,135 @@ select {
 
 input[type="date"]:hover {
   cursor: pointer;
+}
+
+.submit-button {
+  margin-top: 20px;
+}
+
+/* components */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: normal;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus {
+    opacity: 0.7;
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  background: var(--accent);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    opacity: 0.7;
+  }
+}
+
+/* login.php */
+.login-register-title {
+  text-align: center;
+}
+
+.info-link {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* album_list.php */
+.album-list {
+  margin: 20px 0 0 30px;
+  display: grid;
+  gap: 5px;
+}
+
+/* album_details.php */
+.column-container {
+  display: flex;
+  justify-content: space-between;
+
+  & aside {
+    width: 300px;
+  }
+}
+
+.comment-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & li {
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+}
+
+.rating-list {
+  display: flex;
+  gap: 15px;
+}
+
+.track-list {
+  display: grid;
+  gap: 5px;
+  margin-left: 30px;
+}
+
+.member-comments-title {
+  margin-top: 20px;
+}
+
+.comment-details {
+  display: flex;
+  gap: 5px;
+}
+
+.star-rating,
+.comment-fieldset {
+  padding: 10px;
+  border-radius: 10px;
+
+  & legend {
+    padding: 0 5px;
+    font-weight: 500;
+  }
+
+  & input[type="submit"] {
+    margin-top: 10px;
+  }
+}
+
+.comment-fieldset {
+  margin-top: 10px;
+
+  & textarea {
+    width: 100%;
+    resize: vertical;
+  }
+}
+
+.delete-button {
+  margin-top: 20px;
+  background-color: red;
+  border: 1px solid red;
 }
