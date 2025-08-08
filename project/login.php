@@ -1,4 +1,44 @@
 <?php
+  require "db_connect.php";
+
+  if (isset($_SESSION['username'])) {
+    header('Location: album_list.php');
+    exit;
+  }
+
+  if (isset($_POST['submit'])) {
+    $errors = [];
+
+    // trim all input values
+    $email = trim($_POST["email"]) ?? "";
+    $password = trim($_POST["pword"]) ?? "";
+
+    // email checks
+    if ($email === "") {
+      $errors[] = "Email is empty";
+    }
+
+    // password checks
+    if ($password === "") {
+      $errors[] = "Password is empty";
+    }
+
+    if (!$errors) {
+      $stmt = $db->prepare("SELECT * FROM user WHERE email = ? AND password = ?");
+      $stmt->execute([$email, $password]);
+      $user = $stmt->fetch();
+
+      if ($user) {
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['access_level'] = $user['access_level'];
+        header('Location: album_list.php');
+        exit;
+      } else {
+        $errors[] = 'Invalid credentials, try again!';
+      }
+    }
+  }
+
   $page_title = "Login | Records";
   $page_description = "Login Form for users";
   require "header.php";
@@ -15,7 +55,7 @@
     class="form"
     name="login_form"
     method="post"
-    action="login_handler.php"
+    action="login.php"
     onsubmit="return validateLogin()">
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
@@ -25,6 +65,15 @@
       <span>Password<sup>*</sup>:</span>
       <input type="password" name="pword" />
     </label>
+
+    <?php
+      if ($errors){
+        foreach ($errors as $error) {
+          echo "<p class='error'>".$error."</p>";
+        }
+      }
+    ?>
+
     <input class="button submit-button" type="submit" name="submit" value="Submit" />
   </form>
 </main>

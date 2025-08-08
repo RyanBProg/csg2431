@@ -11,10 +11,6 @@
       $errors[] = "Email is empty.";
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors[] = "Invalid email format.";
-    }
-
     // password checks
     if ($password === "") {
       $errors[] = "Password is empty.";

@@ -90,29 +90,57 @@ header {
         background-color: var(--white);
         padding: 5px 10px;
         border-radius: 5px;
-
-        &:hover {
-          text-decoration: none;
-          opacity: 0.7;
-        }
       }
     }
   }
 
-  & .searchbar {
+  & .navbar-end {
     display: flex;
-    justify-content: center;
     gap: 5px;
 
-    & label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+    & .searchbar {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+
+      & label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      input[type="text"] {
+        padding-right: 90px;
+      }
+
+      input[type="submit"] {
+        position: absolute;
+        right: 0;
+        border-radius: 0 5px 5px 0;
+        background: #000;
+      }
+    }
+
+    & .navbar-auth {
+      margin-left: 30px;
+      display: flex;
+      gap: 8px;
+
+      & .navbar-auth-info {
+        display: grid;
+        font-size: 0.8rem;
+        text-align: right;
+      }
+
+      .logout-button {
+        background-color: red;
+      }
     }
   }
 }
@@ -191,7 +219,6 @@ a {
 .button {
   display: inline-block;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--accent);
   border-radius: 5px;
   background: var(--accent);
   color: white;
@@ -201,11 +228,17 @@ a {
   &:hover {
     cursor: pointer;
     opacity: 0.7;
+    text-decoration: none;
   }
 
   &:focus {
     opacity: 0.7;
+    text-decoration: none;
   }
+}
+
+.error {
+  color: red;
 }
 
 /* login.php */
