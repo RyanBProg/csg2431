@@ -59,15 +59,31 @@
     onsubmit="return validateLogin()">
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
-      <input type="email" name="email" autofocus />
+
+      <?php
+        if (isset($email)){
+          echo '<input type="email" name="email" autofocus value="' . $email . '" />';
+        } else {
+          echo '<input type="email" name="email" autofocus />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
-      <input type="password" name="pword" />
+
+      <?php
+        if (isset($password)){
+          echo '<input type="password" name="pword" value="' . $password . '" />';
+        } else {
+          echo '<input type="password" name="pword" />';
+        }
+      ?>
+      
     </label>
 
     <?php
-      if ($errors){
+      if (isset($errors)){
         foreach ($errors as $error) {
           echo "<p class='error'>".$error."</p>";
         }

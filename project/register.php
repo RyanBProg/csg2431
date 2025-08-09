@@ -14,7 +14,7 @@
     $email = trim($_POST["email"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
     $conf_password = trim($_POST["pword_conf"]) ?? "";
-    $profile = trim($POST["profile"]) ?? "";
+    $profile = trim($_POST["profile"]) ?? "";
     $dob = $_POST["dob"];
 
     // username checks
@@ -59,11 +59,7 @@
       $errors[] = "You must agree to the terms and conditions.";
     }
 
-    if ($errors){
-      foreach ($errors as $error) {
-        echo "<p>".$error."</p>";
-      }
-    } else {
+    if (!$errors) {
       $stmt = $db->prepare("INSERT INTO user (username, password, date_of_birth, profile, email) 
                             VALUES (?, ?, ?, ?, ?)");
       $result = $stmt->execute( [$username, $password, $dob, $profile, $email] );
@@ -79,15 +75,21 @@
           header('Location: album_list.php');
           exit;
         } else {
-          echo "<p>Registration succeeded, but failed to fetch user info. Please try again.</p>";
+          $errors[] = "Registration succeeded, but failed to fetch user info. Please try again";
         }
       } else if ($stmt->errorCode() === "23000") {
-        echo '<p>Username "'.$_POST['uname'].'" already taken</p>';
-        echo '<a href="javascript: window.history.back()">Return to form</a>';
+        $errorInfo = $stmt->errorInfo();
+
+        if (strpos($errorInfo[2], 'username')) {
+          $errors[] = 'Username "' . $_POST['uname'] . '" is already taken.';
+        } else if (strpos($errorInfo[2], 'email')) {
+          $errors[] = 'Email "' . $_POST['email'] . '" is already registered.';
+        } else {
+          $errors[] = 'Duplicate entry found. Please use different credentials.';
+        }
         // print_r($stmt->errorInfo());
       } else {
-        echo "<p>Something went wrong.</p>";
-        echo '<a href="javascript: window.history.back()">Return to form</a>';
+        $errors[] = 'Something went wrong';
         // print_r($stmt->errorInfo());
       }
     }
@@ -113,35 +115,99 @@
     onsubmit="return validateRegister()">
     <label class="form-label">
       <span>Username<sup>*</sup>:</span>
-      <input type="text" name="uname" autofocus />
+
+      <?php
+        if (isset($username)){
+          echo '<input type="text" name="uname" autofocus value="' . $username . '" />';
+        } else {
+          echo '<input type="text" name="uname" autofocus />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
-      <input type="email" name="email" />
+
+      <?php
+        if (isset($email)){
+          echo '<input type="email" name="email" value="' . $email . '" />';
+        } else {
+          echo '<input type="email" name="email" />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
-      <input type="password" name="pword" />
+
+      <?php
+        if (isset($password)){
+          echo '<input type="password" name="pword" value="' . $password . '" />';
+        } else {
+          echo '<input type="password" name="pword" />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Confirm Password<sup>*</sup>:</span>
-      <input type="password" name="pword_conf" />
+
+      <?php
+        if (isset($conf_password)){
+          echo '<input type="password" name="pword_conf" value="' . $conf_password . '" />';
+        } else {
+          echo '<input type="password" name="pword_conf" />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Date of Birth<sup>*</sup>:</span>
-      <input type="date" name="dob" />
+
+      <?php
+        if (isset($dob)){
+          echo '<input type="date" name="dob" value="' . $dob . '" />';
+        } else {
+          echo '<input type="date" name="dob" />';
+        }
+      ?>
+
     </label>
     <label class="form-label">
       <span>Profile:</span>
-      <textarea rows="6" name="profile"></textarea>
+
+      <?php
+        if (isset($profile)){
+          echo '<textarea rows="6" name="profile">' . nl2br(htmlentities($profile)) . '</textarea>';
+        } else {
+          echo '<textarea rows="6" name="profile"></textarea>';
+        }
+      ?>
+
     </label>
     <label>
-      <input type="checkbox" name="agree" />
+      <?php
+        if (isset($_POST["agree"])){
+          echo '<input type="checkbox" name="agree" checked />';
+        } else {
+          echo '<input type="checkbox" name="agree" />';
+        }
+      ?>
+
       I agree to all
       <a href="javascript: alert('Nobody reads this...')">
         terms and conditions
       </a>
     </label>
+
+    <?php
+      if (isset($errors)){
+        foreach ($errors as $error) {
+          echo "<p class='error'>" . $error . "</p>";
+        }
+      }
+    ?>
+
     <input class="button submit-button" type="submit" name="submit" value="Submit" />
   </form>
 </main>
