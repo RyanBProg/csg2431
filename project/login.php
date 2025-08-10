@@ -10,22 +10,19 @@
     $errors = [];
 
     // trim all input values
-    $email = trim($_POST["email"]) ?? "";
+    $username = trim($_POST["username"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
 
-    // email checks
-    if ($email === "") {
-      $errors[] = "Email is empty";
+    if ($username === "") {
+      $errors[] = "Username is empty";
     }
-
-    // password checks
     if ($password === "") {
       $errors[] = "Password is empty";
     }
 
     if (!$errors) {
-      $stmt = $db->prepare("SELECT * FROM user WHERE email = ? AND password = ?");
-      $stmt->execute([$email, $password]);
+      $stmt = $db->prepare("SELECT * FROM user WHERE username = ? AND password = ?");
+      $stmt->execute([$username, $password]);
       $user = $stmt->fetch();
 
       if ($user) {
@@ -58,13 +55,13 @@
     action="login.php"
     onsubmit="return validateLogin()">
     <label class="form-label">
-      <span>Email<sup>*</sup>:</span>
+      <span>Username<sup>*</sup>:</span>
 
       <?php
-        if (isset($email)){
-          echo '<input type="email" name="email" autofocus value="' . $email . '" />';
+        if (isset($username)){
+          echo '<input type="text" name="username" autofocus value="' . $username . '" />';
         } else {
-          echo '<input type="email" name="email" autofocus />';
+          echo '<input type="text" name="username" autofocus />';
         }
       ?>
 
