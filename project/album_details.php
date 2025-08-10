@@ -1,16 +1,45 @@
 <?php
   require 'db_connect.php';
-  
-  // Handle rating submission
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
-    $rating = htmlspecialchars($_POST['rating']);
-    echo "<p>Rating submitted: $rating</p>";
+
+  if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
+    header('Location: album_list.php');
+    exit;
   }
 
-  // Handle comment submission
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
-    $comment = htmlspecialchars($_POST['comment']);
-    echo "<p>Comment submitted: $comment</p>";
+  // Fetch album and tracks
+  $stmt = $db->prepare("SELECT a.album_id, a.title AS album_title, a.artist, a.label, a.release_date, 
+                              t.track_id, t.title AS track_title, t.duration_sec, t.track_no
+                        FROM album a
+                        LEFT JOIN track t ON a.album_id = t.album_id
+                        WHERE a.album_id = ?
+                        ORDER BY t.track_no");
+  $stmt->execute([$_GET['id']]);
+  $rows = $stmt->fetchAll();
+
+  if (!$rows) {
+    header('Location: album_list.php');
+    exit;
+  }
+
+  // Build album array
+  $album = [
+    'album_id' => $rows[0]['album_id'],
+    'title' => $rows[0]['album_title'],
+    'artist' => $rows[0]['artist'],
+    'label' => $rows[0]['label'],
+    'release_date' => $rows[0]['release_date'],
+    'tracks' => []
+  ];
+
+  foreach ($rows as $row) {
+    if ($row['track_id'] !== null) {
+      $album['tracks'][] = [
+        'track_id' => $row['track_id'],
+        'title' => $row['track_title'],
+        'duration_sec' => $row['duration_sec'],
+        'track_no' => $row['track_no']
+      ];
+    }
   }
 
   $page_title = "Album Details | Records";
@@ -19,94 +48,127 @@
 ?>
 
 <main>
-  <h1>What's Going On (1971)</h1>
+  <h1><?= htmlentities($album['title']) ?> (<?= date('Y', strtotime($album['release_date'])) ?>)</h1>
   <div class="column-container">
     <section>
-      <p><strong>Artist:</strong> Marvin Gaye</p>
-      <p><strong>Label:</strong> UMG Recordings</p>
+      <p><strong>Artist:</strong> <?= htmlentities($album['artist']) ?></p>
+      <p><strong>Label:</strong> <?= htmlentities($album['label']) ?></p>
       <p><strong>Track List:</strong></p>
-      <ol class="track-list">
-        <li>What's Going On</li>
-        <li>What's Happening Brother</li>
-        <li>Flyin' High</li>
-        <li>Save The Children</li>
-        <li>God Is Love</li>
-        <li>Mercy Mercy Me</li>
-        <li>Right On</li>
-        <li>Wholy Holy</li>
-        <li>Inner City Blue</li>
-      </ol>
+
+      <?php if (!empty($album['tracks'])): ?>
+        <ol class="track-list">
+          <?php foreach ($album['tracks'] as $track): ?>
+            <li>
+              <?= htmlentities($track['track_no']) ?>. <?= htmlentities($track['title']) ?> 
+              (<?= gmdate("i:s", $track['duration_sec']) ?>)
+            </li>
+          <?php endforeach; ?>
+        </ol>
+      <?php else: ?>
+        <p>No tracks found.</p>
+      <?php endif; ?>
+
       <form action="delete_handler.php" method="post" onsubmit="return handleDelete()">
-          <input type="hidden" name="album_id" value="123">
-          <button type="submit" class="button delete-button">Delete</button>
+        <input type="hidden" name="album_id" value="<?= $album['album_id'] ?>">
+        <button type="submit" class="button delete-button">Delete</button>
       </form>
     </section>
+
     <aside>
-      <p><strong>Member Rating:</strong> 4.2/5</p>
-      <form
-      name="rating_form"
-      method="post"
-      action=""
-      onsubmit="return validateRating()">
-        <fieldset class="star-rating">
-          <legend>Rate this album</legend>
-          <div class="rating-list">
-            <label>
-              <input type="radio" name="rating" value="1">
-              1&#9733;
-            </label>
-            <label>
-              <input type="radio" name="rating" value="2">
-              2&#9733;
-            </label>
-            <label>
-              <input type="radio" name="rating" value="3">
-              3&#9733;
-            </label>
-            <label>
-              <input type="radio" name="rating" value="4">
-              4&#9733;
-            </label>
-            <label>
-              <input type="radio" name="rating" value="5">
-              5&#9733;
-            </label>
-          </div>
-          <input class="button" type="submit" name="submit" value="Submit" />
-        </fieldset>
-      </form>
+      <?php
+        $album_id = (int) $_GET['id'];
+        $username = $_SESSION['username'] ?? null;
+
+        // average rating
+        $stmt_avg = $db->prepare("SELECT ROUND(AVG(value), 1) AS avg_rating FROM rating WHERE album_id = ?");
+        $stmt_avg->execute([$album_id]);
+        $avg_result = $stmt_avg->fetch(PDO::FETCH_ASSOC);
+        $avg_rating = $avg_result['avg_rating'] ?? 'N/A';
+
+        // current user's rating
+        $user_rating = '0';
+        if ($username) {
+          $stmt_user = $db->prepare("SELECT value FROM rating WHERE album_id = ? AND username = ?");
+          $stmt_user->execute([$album_id, $username]);
+          $user_result = $stmt_user->fetch(PDO::FETCH_ASSOC);
+          if ($user_result) {
+            $user_rating = $user_result['value'];
+          }
+        }
+      ?>
+
+      <p><strong>Member Rating:</strong> <?= $avg_rating ?>/5</p>
+      <p><strong>Your Rating:</strong> <?= $user_rating ?>/5</p>
+
+      <?php
+        if (isset($_SESSION['username'])) {
+          $ratingOptions = '';
+          for ($i = 1; $i <= 5; $i++) {
+            $ratingOptions .= '<label>
+                <input type="radio" name="rating" value="' . $i . '">
+                ' . $i . '&#9733;
+              </label>';
+          }
+
+          echo '<form
+                  name="rating_form"
+                  method="post"
+                  action="rating_handler.php?id=' . $_GET['id'] . '"
+                  onsubmit="return validateRating()">
+                  <fieldset class="star-rating">
+                    <legend>Rate this album</legend>
+                    <div class="rating-list">'
+                      . $ratingOptions .
+                    '</div>
+                    <input class="button" type="submit" name="submit" value="Submit" />
+                  </fieldset>
+                </form>';
+        }
+      ?>
+
       <p class="member-comments-title"><strong>Member Comments:</strong></p>
+      <?php
+      $album_id = (int) $_GET['id'];
+
+      $stmt = $db->prepare("SELECT username, content, created_at
+                            FROM comment
+                            WHERE album_id = ?
+                            ORDER BY created_at ASC");
+
+      $stmt->execute([$album_id]);
+      $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      ?>
+
       <ul class="comment-list">
-        <li>
-          <div class="comment-details">
-            <p><strong>Jblogs213</strong></p>
-            -
-            <p><em>14/04/2024</em></p>
-          </div>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum repellat itaque ab deserunt facere laborum! Dicta non accusantium delectus unde.</p>
-        </li>
-        <li>
-          <div class="comment-details">
-            <p><strong>Laura135</strong></p>
-            -
-            <p><em>12/04/2024</em></p>
-          </div>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        </li>
+        <?php if ($comments): ?>
+          <?php foreach ($comments as $comment): ?>
+            <li>
+              <div class="comment-details">
+                <p><strong><?= htmlspecialchars($comment['username']) ?></strong></p> -
+                <p><em><?= date('d/m/Y', strtotime($comment['created_at'])) ?></em></p>
+              </div>
+              <p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+            </li>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <li><p>No comments yet. Be the first to comment!</p></li>
+        <?php endif; ?>
       </ul>
-      <form name="comment_form" method="post" action="" class="add-comment-form" onsubmit="return validateComment()">
-        <fieldset class="comment-fieldset">
-          <legend>Add a Comment</legend>
-          <label for="comment">Comment:</label>
-          <textarea id="comment" name="comment" rows="3"></textarea>
-          <input class="button" type="submit" name="submit" value="Submit" />
-        </fieldset>
-      </form>
+
+      <?php
+        if (isset($_SESSION['username'])) {
+          echo '<form name="comment_form" method="post" action="comment_handler.php?id=' . $_GET['id'] . '" class="add-comment-form" onsubmit="return validateComment()">
+            <fieldset class="comment-fieldset">
+              <legend>Add a Comment</legend>
+              <label for="comment">Comment:</label>
+              <textarea id="comment" name="comment" rows="3"></textarea>
+              <input class="button" type="submit" name="submit" value="Submit" />
+            </fieldset>
+          </form>';
+        }
+      ?>
     </aside>
   </div>
 </main>
 
-<?php
-  require "footer.php"
-?>
-
+<?php require "footer.php"; ?>
