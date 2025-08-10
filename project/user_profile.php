@@ -29,7 +29,6 @@
       echo '<h1>Viewing Profile of "' . htmlentities($user['username']) . '"</h1>';
     }
   ?>
-  <a style="display: block; margin: 20px 0;" href="javascript:history.back()"><- Back</a> 
 
   <?php
     if ($user['username'] === $_SESSION['username']){
@@ -37,6 +36,7 @@
       echo '<p><strong>Email:</strong> ' . htmlentities($user['email']) . '</p>';
       echo '<p><strong>Born In:</strong> ' . htmlentities($user['date_of_birth']) . '</p>';
       echo '<p><strong>Access Level:</strong> ' . htmlentities($user['access_level']) . '</p>';
+      echo '<p><strong>Profile:</strong> ' . htmlentities($user['profile']) . '</p>';
       echo '<a style="margin: 20px 0" href="update_profile.php?username=' . $_GET['username'] . '" class="button">Update Profile</a>';
     } else {
       echo '<p><strong>Born In:</strong> ' . htmlentities($user['birth_year']) . '</p>';

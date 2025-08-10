@@ -80,13 +80,13 @@
         $username = $_SESSION['username'] ?? null;
 
         // average rating
-        $stmt_avg = $db->prepare("SELECT ROUND(AVG(value), 1) AS avg_rating FROM rating WHERE album_id = ?");
+        $stmt_avg = $db->prepare("SELECT ROUND(AVG(value), 2) AS avg_rating FROM rating WHERE album_id = ?");
         $stmt_avg->execute([$album_id]);
         $avg_result = $stmt_avg->fetch(PDO::FETCH_ASSOC);
         $avg_rating = $avg_result['avg_rating'] ?? 'N/A';
 
         // current user's rating
-        $user_rating = '0';
+        $user_rating = 'N/A';
         if ($username) {
           $stmt_user = $db->prepare("SELECT value FROM rating WHERE album_id = ? AND username = ?");
           $stmt_user->execute([$album_id, $username]);
@@ -97,8 +97,8 @@
         }
       ?>
 
-      <p><strong>Member Rating:</strong> <?= $avg_rating ?>/5</p>
-      <p><strong>Your Rating:</strong> <?= $user_rating ?>/5</p>
+      <p><strong>Member Rating:</strong> <?= $avg_rating ?> <span style="font-size: 12px">/5</span></p>
+      <p><strong>Your Rating:</strong> <?= $user_rating ?> <span style="font-size: 12px">/5</span></p>
 
       <?php
         if (isset($_SESSION['username'])) {
