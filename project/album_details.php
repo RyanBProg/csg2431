@@ -144,7 +144,17 @@
           <?php foreach ($comments as $comment): ?>
             <li>
               <div class="comment-details">
-                <p><strong><?= htmlspecialchars($comment['username']) ?></strong></p> -
+                <p>
+                  <strong>
+                    <?php if (isset($_SESSION['username'])): ?>
+                      <a href="user_profile.php?username=<?= urlencode($comment['username']) ?>">
+                        <?= htmlspecialchars($comment['username']) ?>
+                      </a>
+                    <?php else: ?>
+                      <?= htmlspecialchars($comment['username']) ?>
+                    <?php endif; ?>
+                  </strong>
+                </p> -
                 <p><em><?= date('d/m/Y', strtotime($comment['created_at'])) ?></em></p>
               </div>
               <p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>

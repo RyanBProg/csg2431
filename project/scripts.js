@@ -161,3 +161,46 @@ function handleDelete() {
     "Are you sure you want to delete this album? This action cannot be undone."
   );
 }
+
+function validateProfileUpdate() {
+  const form = document.update_profile_form;
+  const errors = [];
+
+  form.email.style.borderColor = "";
+  form.pword.style.borderColor = "";
+  form.pword_conf.style.borderColor = "";
+
+  // trim all input values and update the input fields with the trimmed values
+  form.email.value = form.email.value.trim();
+  form.pword.value = form.pword.value.trim();
+  form.pword_conf.value = form.pword_conf.value.trim();
+  form.profile.value = form.profile.value.trim();
+
+  // email checks
+  if (form.email.value === "") {
+    errors.push("Email is empty.");
+    form.email.style.borderColor = "red";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value)) {
+    errors.push("Invalid email format.");
+    form.email.style.borderColor = "red";
+  }
+
+  // password checks
+  if (form.pword.value.length < 5) {
+    errors.push("Password must be at least 5 characters long.");
+    form.pword.style.borderColor = "red";
+  }
+
+  if (form.pword.value != form.pword_conf.value) {
+    errors.push("Password does not match confirmation.");
+    form.pword.style.borderColor = "red";
+    form.pword_conf.style.borderColor = "red";
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}

@@ -39,7 +39,7 @@
             echo '<div class="navbar-auth">
                     <div class="navbar-auth-info">
                       <span>' . $_SESSION['username'] . '</span>
-                      <a href="user_profile.php">Update Profile</a>
+                      <a href="user_profile.php?username=' . $_SESSION['username'] . '">View Profile</a>
                     </div>
                     <a class="button logout-button" href="logout.php">Logout</a>
                   </div>';
