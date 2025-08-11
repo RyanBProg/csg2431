@@ -1,6 +1,8 @@
 Name: Ryan Bowler
 Student Number: 10714744
 
+Main home page: album_list.php
+
 # admin user
 username: admin123
 password: password
