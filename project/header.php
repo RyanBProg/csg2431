@@ -35,8 +35,8 @@
         <?php if (isset($_SESSION['username'])): ?>
           <div class="navbar-auth">
             <div class="navbar-auth-info">
-              <span><?= $_SESSION['username'] ?></span>
-              <a href="user_profile.php?username=<?= $_SESSION['username'] ?>">View Profile</a>
+              <a href="user_profile.php"><?= $_SESSION['username'] ?></a>
+              <a href="update_profile.php">Update Profile</a>
             </div>
             <a class="button logout-button" href="logout.php">Logout</a>
           </div>

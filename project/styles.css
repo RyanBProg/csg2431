@@ -1,7 +1,7 @@
 :root {
   --black: #000000;
   --gray: #ebebeb;
-  --accent: #16a25e;
+  --accent: #0087e0;
   --white: #ffffff;
 }
 
@@ -185,6 +185,7 @@ select {
   border: 1px solid var(--gray);
   border-radius: 5px;
   font-size: 1rem;
+  resize: vertical;
 
   &:focus {
     outline: none;
@@ -327,7 +328,6 @@ a {
 
   & textarea {
     width: 100%;
-    resize: vertical;
   }
 }
 

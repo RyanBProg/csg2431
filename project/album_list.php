@@ -54,7 +54,7 @@
     <?php if (count($records_data) > 0): ?>
       <?php foreach ($records_data as $row): ?>
         <li>
-          <a href="album_details.php?id=<?= htmlspecialchars($row['album_id']) ?>">
+          <a href="album_details.php?id=<?= $row['album_id'] ?>">
             <?= htmlspecialchars($row['title']) ?>, 
             "<?= htmlspecialchars($row['artist']) ?>" 
             (<?= htmlspecialchars($row['release_year']) ?>)

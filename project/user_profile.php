@@ -1,13 +1,12 @@
 <?php
   require 'db_connect.php';
 
-  if (!isset($_SESSION['username']) || !isset($_GET['username'])) {
+  if (!isset($_SESSION['username'])) {
     header('Location: album_list.php');
     exit;
   }
 
   $stmt = $db->prepare("SELECT username, date_of_birth, YEAR(date_of_birth) AS birth_year, access_level, email, password, profile FROM user WHERE username = ?");
-
   $stmt->execute( [$_SESSION['username']] );
   $user = $stmt->fetch();
   
