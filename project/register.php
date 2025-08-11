@@ -8,8 +8,6 @@
 
   if (isset($_POST["submit"])) {
     $errors = [];
-
-    // trim all input values
     $username = trim($_POST["uname"]) ?? "";
     $email = trim($_POST["email"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
@@ -21,7 +19,6 @@
     if (strlen($username) < 6 || strlen($username) > 20) {
       $errors[] = "Username must be between 6 and 20 characters long.";
     }
-
     if (!ctype_alnum($username)) {
       $errors[] = "Username may only contain letters and numbers (no spaces or symbols).";
     }
@@ -30,7 +27,6 @@
     if ($email === "") {
       $errors[] = "Email is empty.";
     }
-
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $errors[] = "Invalid email format.";
     }
@@ -39,7 +35,6 @@
     if (strlen($password) < 5) {
       $errors[] = "Password must be at least 5 characters long.";
     }
-
     if ($conf_password !== $password) {
       $errors[] = "Password and confirm password must match.";
     }
@@ -115,98 +110,75 @@
     onsubmit="return validateRegister()">
     <label class="form-label">
       <span>Username<sup>*</sup>:</span>
-
-      <?php
-        if (isset($username)){
-          echo '<input type="text" name="uname" autofocus value="' . $username . '" />';
-        } else {
-          echo '<input type="text" name="uname" autofocus />';
-        }
-      ?>
-
+      <?php if (isset($username)): ?>
+        <input type="text" name="uname" autofocus value="<?= $username ?>" />
+      <?php else: ?>
+        <input type="text" name="uname" autofocus />
+      <?php endif; ?>
     </label>
+
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
-
-      <?php
-        if (isset($email)){
-          echo '<input type="email" name="email" value="' . $email . '" />';
-        } else {
-          echo '<input type="email" name="email" />';
-        }
-      ?>
-
+      <?php if (isset($email)): ?>
+        <input type="email" name="email" value="<?= $email ?>" />
+      <?php else: ?>
+        <input type="email" name="email" />
+      <?php endif; ?>
     </label>
+
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
-
-      <?php
-        if (isset($password)){
-          echo '<input type="password" name="pword" value="' . $password . '" />';
-        } else {
-          echo '<input type="password" name="pword" />';
-        }
-      ?>
-
+      <?php if (isset($password)): ?>
+        <input type="password" name="pword" value="<?= $password ?>" />
+      <?php else: ?>
+        <input type="password" name="pword" />
+      <?php endif; ?>
     </label>
+
     <label class="form-label">
       <span>Confirm Password<sup>*</sup>:</span>
-
-      <?php
-        if (isset($conf_password)){
-          echo '<input type="password" name="pword_conf" value="' . $conf_password . '" />';
-        } else {
-          echo '<input type="password" name="pword_conf" />';
-        }
-      ?>
-
+      <?php if (isset($conf_password)): ?>
+        <input type="password" name="pword_conf" value="<?= $conf_password ?>" />
+      <?php else: ?>
+        <input type="password" name="pword_conf" />
+      <?php endif; ?>
     </label>
+
     <label class="form-label">
       <span>Date of Birth<sup>*</sup>:</span>
-
-      <?php
-        if (isset($dob)){
-          echo '<input type="date" name="dob" value="' . $dob . '" />';
-        } else {
-          echo '<input type="date" name="dob" />';
-        }
-      ?>
-
+      <?php if (isset($dob)): ?>
+        <input type="date" name="dob" value="<?= $dob ?>" />
+      <?php else: ?>
+        <input type="date" name="dob" />
+      <?php endif; ?>
     </label>
+
     <label class="form-label">
       <span>Profile:</span>
-
-      <?php
-        if (isset($profile)){
-          echo '<textarea rows="6" name="profile">' . nl2br(htmlentities($profile)) . '</textarea>';
-        } else {
-          echo '<textarea rows="6" name="profile"></textarea>';
-        }
-      ?>
-
+      <?php if (isset($profile)): ?>
+        <textarea rows="6" name="profile"><?= nl2br(htmlentities($profile)) ?></textarea>
+      <?php else: ?>
+        <textarea rows="6" name="profile"></textarea>
+      <?php endif; ?>
     </label>
-    <label>
-      <?php
-        if (isset($_POST["agree"])){
-          echo '<input type="checkbox" name="agree" checked />';
-        } else {
-          echo '<input type="checkbox" name="agree" />';
-        }
-      ?>
 
+    <label>
+      <?php if (isset($_POST["agree"])): ?>
+        <input type="checkbox" name="agree" checked />
+      <?php else: ?>
+        <input type="checkbox" name="agree" />
+      <?php endif; ?>
       I agree to all
       <a href="javascript: alert('Nobody reads this...')">
         terms and conditions
       </a>
     </label>
 
-    <?php
-      if (isset($errors)){
-        foreach ($errors as $error) {
-          echo "<p class='error'>" . $error . "</p>";
-        }
-      }
-    ?>
+    <?php if (isset($errors)): ?>
+      <?php foreach ($errors as $error): ?>
+        <p class='error'><?= $error ?></p>
+      <?php endforeach; ?>
+    <?php endif; ?>
 
     <input class="button submit-button" type="submit" name="submit" value="Submit" />
   </form>

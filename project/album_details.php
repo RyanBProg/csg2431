@@ -68,10 +68,12 @@
         <p>No tracks found.</p>
       <?php endif; ?>
 
-      <form action="delete_handler.php" method="post" onsubmit="return handleDelete()">
-        <input type="hidden" name="album_id" value="<?= $album['album_id'] ?>">
-        <button type="submit" class="button delete-button">Delete</button>
-      </form>
+      <?php if(isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin"): ?>
+        <form action="delete_handler.php" method="post" onsubmit="return handleDelete()">
+          <input type="hidden" name="album_id" value="<?= $album['album_id'] ?>">
+          <button type="submit" class="button delete-button">Delete</button>
+        </form>
+      <?php endif; ?>
     </section>
 
     <aside>
@@ -82,6 +84,7 @@
         // average rating
         $stmt_avg = $db->prepare("SELECT ROUND(AVG(value), 2) AS avg_rating FROM rating WHERE album_id = ?");
         $stmt_avg->execute([$album_id]);
+        // returns each row as an associative array only (only named keys, not indexed)
         $avg_result = $stmt_avg->fetch(PDO::FETCH_ASSOC);
         $avg_rating = $avg_result['avg_rating'] ?? 'N/A';
 
@@ -98,7 +101,9 @@
       ?>
 
       <p><strong>Member Rating:</strong> <?= $avg_rating ?> <span style="font-size: 12px">/5</span></p>
-      <p><strong>Your Rating:</strong> <?= $user_rating ?> <span style="font-size: 12px">/5</span></p>
+      <?php if (isset($_SESSION['username'])): ?>
+        <p><strong>Your Rating:</strong> <?= $user_rating ?> <span style="font-size: 12px">/5</span></p>
+      <?php endif; ?>
 
       <?php
         if (isset($_SESSION['username'])) {
@@ -109,34 +114,37 @@
                 ' . $i . '&#9733;
               </label>';
           }
-
-          echo '<form
-                  name="rating_form"
-                  method="post"
-                  action="rating_handler.php?id=' . $_GET['id'] . '"
-                  onsubmit="return validateRating()">
-                  <fieldset class="star-rating">
-                    <legend>Rate this album</legend>
-                    <div class="rating-list">'
-                      . $ratingOptions .
-                    '</div>
-                    <input class="button" type="submit" name="submit" value="Submit" />
-                  </fieldset>
-                </form>';
         }
       ?>
 
+      <?php if (isset($_SESSION['username'])): ?>
+        <form
+          name="rating_form"
+          method="post"
+          action="rating_handler.php?id=' . $_GET['id'] . '"
+          onsubmit="return validateRating()">
+          <fieldset class="star-rating">
+            <legend>Rate this album</legend>
+            <div class="rating-list">
+              <?= $ratingOptions ?>
+            </div>
+            <input class="button" type="submit" name="submit" value="Submit" />
+          </fieldset>
+        </form>
+      <?php endif; ?>
+
+
       <p class="member-comments-title"><strong>Member Comments:</strong></p>
       <?php
-      $album_id = (int) $_GET['id'];
+        $album_id = (int) $_GET['id'];
+        $stmt = $db->prepare("SELECT username, content, created_at
+                              FROM comment
+                              WHERE album_id = ?
+                              ORDER BY created_at DESC");
 
-      $stmt = $db->prepare("SELECT username, content, created_at
-                            FROM comment
-                            WHERE album_id = ?
-                            ORDER BY created_at ASC");
-
-      $stmt->execute([$album_id]);
-      $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute([$album_id]);
+        // returns each row as an associative array only (only named keys, not indexed)
+        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
       ?>
 
       <ul class="comment-list">
@@ -165,18 +173,16 @@
         <?php endif; ?>
       </ul>
 
-      <?php
-        if (isset($_SESSION['username'])) {
-          echo '<form name="comment_form" method="post" action="comment_handler.php?id=' . $_GET['id'] . '" class="add-comment-form" onsubmit="return validateComment()">
+      <?php if (isset($_SESSION['username'])): ?>
+          <form name="comment_form" method="post" action="comment_handler.php?id=<?= $_GET['id'] ?>" class="add-comment-form" onsubmit="return validateComment()">
             <fieldset class="comment-fieldset">
               <legend>Add a Comment</legend>
               <label for="comment">Comment:</label>
               <textarea id="comment" name="comment" rows="3"></textarea>
               <input class="button" type="submit" name="submit" value="Submit" />
             </fieldset>
-          </form>';
-        }
-      ?>
+          </form>
+      <?php endif; ?>
     </aside>
   </div>
 </main>

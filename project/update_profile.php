@@ -13,8 +13,6 @@
 
   if (isset($_POST["submit"])) {
     $errors = [];
-
-    // trim all input values
     $email = trim($_POST["email"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
     $conf_password = trim($_POST["pword_conf"]) ?? "";
@@ -24,7 +22,6 @@
     if ($email === "") {
       $errors[] = "Email is empty.";
     }
-
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $errors[] = "Invalid email format.";
     }
@@ -33,7 +30,6 @@
     if (strlen($password) < 5) {
       $errors[] = "Password must be at least 5 characters long.";
     }
-
     if ($conf_password !== $password) {
       $errors[] = "Password and confirm password must match.";
     }
@@ -42,7 +38,7 @@
       $stmt = $db->prepare("UPDATE user 
                             SET email = ?, password = ?, profile = ? 
                             WHERE username = ?");
-      $result = $stmt->execute([$email, $password, $profile, $_GET['username']]);
+      $result = $stmt->execute([$email, $password, $profile, $_SESSION['username']]);
 
       if ($result === false) {
         $errorCode = $stmt->errorCode();
@@ -66,7 +62,7 @@
 
   $stmt = $db->prepare("SELECT username, email, password, profile FROM user WHERE username = ?");
 
-  $stmt->execute( [$_GET['username']] );
+  $stmt->execute( [$_SESSION['username']] );
   $user = $stmt->fetch();
   
   if (!$user) {
@@ -85,39 +81,38 @@
   <form class="form"
     name="update_profile_form"
     method="post"
-    action="update_profile.php?username=<?= $_GET['username'] ?>"
+    action="update_profile.php?username=<?= $_SESSION['username'] ?>"
     onSubmit="return validateProfileUpdate()"
     >
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
       <input type="email" name="email" value="<?= $user['email'] ?>" />
     </label>
+
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
       <input type="password" name="pword" value="<?= $user['password'] ?>" />
     </label>
+
     <label class="form-label">
       <span>Confirm Password<sup>*</sup>:</span>
       <input type="password" name="pword_conf" value="<?= $user['password'] ?>" />
     </label>
+
     <label class="form-label">
       <span>Profile:</span>
       <textarea rows="6" name="profile"><?= nl2br(htmlentities($user['profile'])) ?></textarea>
     </label>
 
-    <?php
-      if (isset($errors)){
-        foreach ($errors as $error) {
-          echo "<p class='error'>" . $error . "</p>";
-        }
-      }
-    ?>
+    <?php if (isset($errors)): ?>
+      <?php foreach ($errors as $error): ?>
+        <p class='error'><?= $error ?></p>
+      <?php endforeach; ?>
+    <?php endif; ?>
 
-    <?php
-      if (isset($success)){
-        echo "<p class='success'>" . $success . "</p>";
-      }
-    ?>
+    <?php if (isset($success)): ?>
+      <p class='success'><?= $success ?></p>
+    <?php endif; ?>
 
     <input class="button submit-button" type="submit" name="submit" value="Submit" />
   </form>

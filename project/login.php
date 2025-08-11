@@ -8,14 +8,13 @@
 
   if (isset($_POST['submit'])) {
     $errors = [];
-
-    // trim all input values
     $username = trim($_POST["username"]) ?? "";
     $password = trim($_POST["pword"]) ?? "";
 
     if ($username === "") {
       $errors[] = "Username is empty";
     }
+
     if ($password === "") {
       $errors[] = "Password is empty";
     }
@@ -56,36 +55,27 @@
     onsubmit="return validateLogin()">
     <label class="form-label">
       <span>Username<sup>*</sup>:</span>
-
-      <?php
-        if (isset($username)){
-          echo '<input type="text" name="username" autofocus value="' . $username . '" />';
-        } else {
-          echo '<input type="text" name="username" autofocus />';
-        }
-      ?>
-
+      <?php if (isset($username)): ?>
+        <input type="text" name="username" autofocus value="<?= $username ?>" />
+      <?php else: ?>
+        <input type="text" name="username" autofocus />
+      <?php endif; ?>
     </label>
+    
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
-
-      <?php
-        if (isset($password)){
-          echo '<input type="password" name="pword" value="' . $password . '" />';
-        } else {
-          echo '<input type="password" name="pword" />';
-        }
-      ?>
-      
+      <?php if (isset($password)): ?>
+        <input type="password" name="pword" value="<?= $password ?>" />
+      <?php else: ?>
+        <input type="password" name="pword" />
+      <?php endif; ?>
     </label>
 
-    <?php
-      if (isset($errors)){
-        foreach ($errors as $error) {
-          echo "<p class='error'>".$error."</p>";
-        }
-      }
-    ?>
+    <?php if (isset($errors)): ?>
+      <?php foreach ($errors as $error): ?>
+        <p class='error'><?= $error ?></p>
+      <?php endforeach; ?>
+    <?php endif; ?>
 
     <input class="button submit-button" type="submit" name="submit" value="Submit" />
   </form>
