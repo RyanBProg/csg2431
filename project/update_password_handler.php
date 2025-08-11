@@ -15,6 +15,9 @@
     $conf_password = trim($_POST["pword_conf"]) ?? "";
 
     // password checks
+    if ($cur_password === "") {
+      $errors[] = "Please provide a current password.";
+    }
     if (strlen($password) < 5) {
       $errors[] = "Password must be at least 5 characters long.";
     }

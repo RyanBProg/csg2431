@@ -6,7 +6,7 @@
     exit;
   }
 
-  // Fetch album and tracks
+  // fetch album and tracks
   $stmt = $db->prepare("SELECT a.album_id, a.title AS album_title, a.artist, a.label, a.release_date, 
                               t.track_id, t.title AS track_title, t.duration_sec, t.track_no
                         FROM album a
@@ -21,7 +21,7 @@
     exit;
   }
 
-  // Build album array
+  // build album array
   $album = [
     'album_id' => $rows[0]['album_id'],
     'title' => $rows[0]['album_title'],
@@ -48,18 +48,18 @@
 ?>
 
 <main>
-  <h1><?= htmlentities($album['title']) ?> (<?= date('Y', strtotime($album['release_date'])) ?>)</h1>
+  <h1><?= htmlspecialchars($album['title']) ?> (<?= date('Y', strtotime($album['release_date'])) ?>)</h1>
   <div class="column-container">
     <section>
-      <p><strong>Artist:</strong> <?= htmlentities($album['artist']) ?></p>
-      <p><strong>Label:</strong> <?= htmlentities($album['label']) ?></p>
+      <p><strong>Artist:</strong> <?= htmlspecialchars($album['artist']) ?></p>
+      <p><strong>Label:</strong> <?= htmlspecialchars($album['label']) ?></p>
       <p><strong>Track List:</strong></p>
 
       <?php if (!empty($album['tracks'])): ?>
         <ol class="track-list">
           <?php foreach ($album['tracks'] as $track): ?>
             <li>
-              <?= htmlentities($track['track_no']) ?>. <?= htmlentities($track['title']) ?> 
+              <?= htmlspecialchars($track['track_no']) ?>. <?= htmlspecialchars($track['title']) ?> 
               (<?= gmdate("i:s", $track['duration_sec']) ?>)
             </li>
           <?php endforeach; ?>
@@ -70,7 +70,7 @@
 
       <?php if(isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin"): ?>
         <form action="delete_handler.php" method="post" onsubmit="return handleDelete()">
-          <input type="hidden" name="album_id" value="<?= $album['album_id'] ?>">
+          <input type="hidden" name="album_id" value="<?= htmlspecialchars($album['album_id']) ?>">
           <button type="submit" class="button delete-button">Delete</button>
         </form>
       <?php endif; ?>
@@ -121,7 +121,7 @@
         <form
           name="rating_form"
           method="post"
-          action="rating_handler.php?id=<?= $_GET['id'] ?>"
+          action="rating_handler.php?id=<?= urlencode($_GET['id']) ?>"
           onsubmit="return validateRating()">
           <fieldset class="star-rating">
             <legend>Rate this album</legend>
@@ -136,14 +136,14 @@
       <p class="member-comments-title"><strong>Member Comments:</strong></p>
       <?php
         $album_id = $_GET['id'];
-        $stmt = $db->prepare("SELECT username, content, created_at
+        $stmt_comment = $db->prepare("SELECT username, content, created_at
                               FROM comment
                               WHERE album_id = ?
                               ORDER BY created_at DESC");
 
-        $stmt->execute([$album_id]);
+        $stmt_comment->execute([$album_id]);
         // returns each row as an associative array only (only named keys, not indexed)
-        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $comments = $stmt_comment->fetchAll(PDO::FETCH_ASSOC);
       ?>
 
       <ul class="comment-list">
@@ -173,7 +173,7 @@
       </ul>
 
       <?php if (isset($_SESSION['username'])): ?>
-          <form name="comment_form" method="post" action="comment_handler.php?id=<?= $_GET['id'] ?>" class="add-comment-form" onsubmit="return validateComment()">
+          <form name="comment_form" method="post" action="comment_handler.php?id=<?= urlencode($_GET['id']) ?>" class="add-comment-form" onsubmit="return validateComment()">
             <fieldset class="comment-fieldset">
               <legend>Add a Comment</legend>
               <label for="comment">Comment:</label>

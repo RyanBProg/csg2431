@@ -60,9 +60,9 @@
       $result = $stmt->execute( [$username, $password, $dob, $profile, $email] );
 
       if ($result) {
-        $stmt = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
+        $stmt2 = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");
+        $stmt2->execute([$username]);
+        $user = $stmt2->fetch();
 
         if ($user) {
           $_SESSION['username'] = $user['username'];
@@ -75,7 +75,7 @@
       } else if ($stmt->errorCode() === "23000") {
         $errorInfo = $stmt->errorInfo();
 
-        if (strpos($errorInfo[2], 'username')) {
+        if (strpos($errorInfo[2], 'PRIMARY')) {
           $errors[] = 'Username "' . $_POST['uname'] . '" is already taken.';
         } else if (strpos($errorInfo[2], 'email')) {
           $errors[] = 'Email "' . $_POST['email'] . '" is already registered.';
@@ -107,11 +107,12 @@
     name="register_form"
     method="post"
     action="register.php"
-    onsubmit="return validateRegister()">
+    onsubmit="return validateRegister()"
+    >
     <label class="form-label">
       <span>Username<sup>*</sup>:</span>
       <?php if (isset($username)): ?>
-        <input type="text" name="uname" autofocus value="<?= $username ?>" />
+        <input type="text" name="uname" autofocus value="<?= htmlspecialchars($username) ?>" />
       <?php else: ?>
         <input type="text" name="uname" autofocus />
       <?php endif; ?>
@@ -120,7 +121,7 @@
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
       <?php if (isset($email)): ?>
-        <input type="email" name="email" value="<?= $email ?>" />
+        <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" />
       <?php else: ?>
         <input type="email" name="email" />
       <?php endif; ?>
@@ -129,7 +130,7 @@
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
       <?php if (isset($password)): ?>
-        <input type="password" name="pword" value="<?= $password ?>" />
+        <input type="password" name="pword" value="<?= htmlspecialchars($password) ?>" />
       <?php else: ?>
         <input type="password" name="pword" />
       <?php endif; ?>
@@ -138,7 +139,7 @@
     <label class="form-label">
       <span>Confirm Password<sup>*</sup>:</span>
       <?php if (isset($conf_password)): ?>
-        <input type="password" name="pword_conf" value="<?= $conf_password ?>" />
+        <input type="password" name="pword_conf" value="<?= htmlspecialchars($conf_password) ?>" />
       <?php else: ?>
         <input type="password" name="pword_conf" />
       <?php endif; ?>
@@ -147,7 +148,7 @@
     <label class="form-label">
       <span>Date of Birth<sup>*</sup>:</span>
       <?php if (isset($dob)): ?>
-        <input type="date" name="dob" value="<?= $dob ?>" />
+        <input type="date" name="dob" value="<?= htmlspecialchars($dob) ?>" />
       <?php else: ?>
         <input type="date" name="dob" />
       <?php endif; ?>
@@ -156,7 +157,7 @@
     <label class="form-label">
       <span>Profile:</span>
       <?php if (isset($profile)): ?>
-        <textarea rows="6" name="profile"><?= nl2br(htmlentities($profile)) ?></textarea>
+        <textarea rows="6" name="profile"><?= nl2br(htmlspecialchars($profile)) ?></textarea>
       <?php else: ?>
         <textarea rows="6" name="profile"></textarea>
       <?php endif; ?>

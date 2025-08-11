@@ -14,13 +14,13 @@
     $release_date = $_POST['release_date'] ?? '';
     $tracks = $_POST['tracks'] ?? [];
 
-    // Validate album fields
+    // validate album fields
     if ($title === '') $errors[] = "Album title is required.";
     if ($artist === '') $errors[] = "Artist name is required.";
     if ($label === '') $errors[] = "Label is required.";
     if ($release_date === '' || strtotime($release_date) === false) $errors[] = "Valid release date is required.";
 
-    // Validate tracks (optional)
+    // validate tracks
     $valid_tracks = [];
     foreach ($tracks as $index => $track) {
       $track_title = trim($track['title'] ?? '');
@@ -38,7 +38,7 @@
       }
     }
 
-    // If no errors, insert into DB
+    // if no errors, insert into DB
     if (!$errors) {
       $stmt = $db->prepare("INSERT INTO album (title, artist, label, release_date) VALUES (?, ?, ?, ?)");
       $result = $stmt->execute([$title, $artist, $label, $release_date]);
@@ -58,7 +58,7 @@
           }
         }
 
-        header('Location: album_details.php?id=' . $album_id);
+        header('Location: album_details.php?id=' . urlencode($album_id));
         exit;
       } else {
         $errors[] = "Failed to insert album into the database.";
@@ -73,7 +73,7 @@
 
 <main>
   <h1 class="login-register-title">Add New Album</h1>
-  <form class="form" method="post" action="add_album.php">
+  <form class="form" method="post" name="album_form" action="add_album.php" onsubmit="return validateAlbum()">
     <label class="form-label">
       <span>Album Title<sup>*</sup>:</span>
       <input type="text" name="title" value="<?= htmlspecialchars($title ?? '') ?>" />

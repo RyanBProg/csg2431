@@ -54,7 +54,7 @@
     <?php if (count($records_data) > 0): ?>
       <?php foreach ($records_data as $row): ?>
         <li>
-          <a href="album_details.php?id=<?= $row['album_id'] ?>">
+          <a href="album_details.php?id=<?= urlencode($row['album_id']) ?>">
             <?= htmlspecialchars($row['title']) ?>, 
             "<?= htmlspecialchars($row['artist']) ?>" 
             (<?= htmlspecialchars($row['release_year']) ?>)
@@ -62,7 +62,7 @@
 
           <?php if(isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin"): ?>
             <form style="display: inline-block; margin-left: 20px;" action="delete_handler.php" method="post" onsubmit="return handleDelete()">
-              <input type="hidden" name="album_id" value="<?= $row['album_id'] ?>">
+              <input type="hidden" name="album_id" value="<?= htmlspecialchars($row['album_id']) ?>">
               <button type="submit" style="margin: 0; padding: 5px; font-size: 12px;" class="button delete-button">Delete</button>
             </form>
           <?php endif; ?>

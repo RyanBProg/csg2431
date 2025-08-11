@@ -24,7 +24,7 @@
   $result = $stmt->execute( [$_SESSION['username'], $_GET['id'], $_POST['rating']] );
 
   if ($result) {
-    header('Location: album_details.php?id=' . $_GET['id']);
+    header('Location: album_details.php?id=' . urlencode($_GET['id']));
   } else {
     echo "<p>Something went wrong, please re-submit rating</p>";
     echo '<a href="javascript: window.history.back()">Go Back</a>';

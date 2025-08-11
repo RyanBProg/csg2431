@@ -56,7 +56,7 @@
     <label class="form-label">
       <span>Username<sup>*</sup>:</span>
       <?php if (isset($username)): ?>
-        <input type="text" name="username" autofocus value="<?= $username ?>" />
+        <input type="text" name="username" autofocus value="<?= htmlspecialchars($username) ?>" />
       <?php else: ?>
         <input type="text" name="username" autofocus />
       <?php endif; ?>
@@ -65,7 +65,7 @@
     <label class="form-label">
       <span>Password<sup>*</sup>:</span>
       <?php if (isset($password)): ?>
-        <input type="password" name="pword" value="<?= $password ?>" />
+        <input type="password" name="pword" value="<?= htmlspecialchars($password) ?>" />
       <?php else: ?>
         <input type="password" name="pword" />
       <?php endif; ?>

@@ -2,16 +2,16 @@ function validateLogin() {
   const form = document.login_form;
   const errors = [];
 
-  form.email.style.borderColor = "";
+  form.username.style.borderColor = "";
   form.pword.style.borderColor = "";
 
   // trim all input values and update the input fields with the trimmed values
-  form.email.value = form.email.value.trim();
+  form.username.value = form.username.value.trim();
   form.pword.value = form.pword.value.trim();
 
-  if (form.email.value === "") {
-    errors.push("Email is empty.");
-    form.email.style.borderColor = "red";
+  if (form.username.value === "") {
+    errors.push("Username is empty.");
+    form.username.style.borderColor = "red";
   }
 
   if (form.pword.value === "") {
@@ -190,15 +190,20 @@ function validateProfileUpdate() {
 function validatePasswordUpdate() {
   const form = document.update_password_form;
   const errors = [];
-  form.pword_cur.style.borderColor = "";
+  form.current.style.borderColor = "";
   form.pword.style.borderColor = "";
   form.pword_conf.style.borderColor = "";
 
-  form.pword_cur.value = form.pword.value.trim();
+  form.current.value = form.current.value.trim();
   form.pword.value = form.pword.value.trim();
   form.pword_conf.value = form.pword_conf.value.trim();
 
   // password checks
+  if (form.current.value === "") {
+    errors.push("Please provide a current password.");
+    form.current.style.borderColor = "red";
+  }
+
   if (form.pword.value.length < 5) {
     errors.push("New password must be at least 5 characters long.");
     form.pword.style.borderColor = "red";
@@ -208,6 +213,45 @@ function validatePasswordUpdate() {
     errors.push("New password does not match confirmation.");
     form.pword.style.borderColor = "red";
     form.pword_conf.style.borderColor = "red";
+  }
+
+  if (errors.length > 0) {
+    alert("Form Errors:\n" + errors.join("\n"));
+    return false;
+  }
+}
+
+function validateAlbum() {
+  const form = document.album_form;
+  const errors = [];
+  form.title.style.borderColor = "";
+  form.artist.style.borderColor = "";
+  form.label.style.borderColor = "";
+  form.release_date.style.borderColor = "";
+
+  form.title.value = form.title.value.trim();
+  form.artist.value = form.artist.value.trim();
+  form.label.value = form.label.value.trim();
+  form.release_date.value = form.release_date.value.trim();
+
+  if (form.title.value === "") {
+    errors.push("Title is required.");
+    form.title.style.borderColor = "red";
+  }
+
+  if (form.artist.value === "") {
+    errors.push("Artist is required.");
+    form.artist.style.borderColor = "red";
+  }
+
+  if (form.label.value === "") {
+    errors.push("Label is required.");
+    form.label.style.borderColor = "red";
+  }
+
+  if (form.release_date.value === "") {
+    errors.push("Release date is required.");
+    form.release_date.style.borderColor = "red";
   }
 
   if (errors.length > 0) {

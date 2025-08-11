@@ -24,19 +24,19 @@
   <?php if ($user['username'] === $_SESSION['username']): ?>
     <h1>My Profile</h1>
   <?php else: ?>
-    <h1>Viewing Profile of "<?= htmlentities($user['username']) ?>"</h1>
+    <h1>Viewing Profile of "<?= htmlspecialchars($user['username']) ?>"</h1>
   <?php endif; ?>
 
   <?php if ($user['username'] === $_SESSION['username']): ?>
-    <p><strong>Username:</strong> <?= htmlentities($user['username']) ?></p>
-    <p><strong>Email:</strong> <?= htmlentities($user['email']) ?></p>
-    <p><strong>Born In:</strong> <?= htmlentities($user['date_of_birth']) ?></p>
-    <p><strong>Access Level:</strong> <?= htmlentities($user['access_level']) ?></p>
-    <p><strong>Profile:</strong> <?= htmlentities($user['profile']) ?></p>
+    <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
+    <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+    <p><strong>Born In:</strong> <?= htmlspecialchars($user['date_of_birth']) ?></p>
+    <p><strong>Access Level:</strong> <?= htmlspecialchars($user['access_level']) ?></p>
+    <p><strong>Profile:</strong> <?= htmlspecialchars($user['profile']) ?></p>
     <a style="margin: 20px 0" href="update_profile.php?username=<?= urlencode($_SESSION['username']) ?>" class="button">Update Profile</a>
   <?php else: ?>
-    <p><strong>Born In:</strong> <?= htmlentities($user['birth_year']) ?></p>
-    <p><strong>Profile:</strong> <?= htmlentities($user['profile']) ?></p>
+    <p><strong>Born In:</strong> <?= htmlspecialchars($user['birth_year']) ?></p>
+    <p><strong>Profile:</strong> <?= htmlspecialchars($user['profile']) ?></p>
   <?php endif; ?>
 </main>
 

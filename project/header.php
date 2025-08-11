@@ -38,7 +38,7 @@
         <?php if (isset($_SESSION['username'])): ?>
           <div class="navbar-auth">
             <div class="navbar-auth-info">
-              <a href="user_profile.php"><?= $_SESSION['username'] ?></a>
+              <a href="user_profile.php"><?= htmlspecialchars($_SESSION['username']) ?></a>
               <a href="update_profile.php">Update Profile</a>
             </div>
             <a class="button logout-button" href="logout.php">Logout</a>

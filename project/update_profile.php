@@ -31,12 +31,12 @@
     >
     <label class="form-label">
       <span>Email<sup>*</sup>:</span>
-      <input type="email" name="email" value="<?= $user['email'] ?>" />
+      <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" />
     </label>
 
     <label class="form-label">
       <span>Profile:</span>
-      <textarea rows="6" name="profile"><?= nl2br(htmlentities($user['profile'])) ?></textarea>
+      <textarea rows="6" name="profile"><?= nl2br(htmlspecialchars($user['profile'])) ?></textarea>
     </label>
 
     <input class="button submit-button" type="submit" name="submit" value="Update Details" />
