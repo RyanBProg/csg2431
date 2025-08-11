@@ -78,7 +78,7 @@
 
     <aside>
       <?php
-        $album_id = (int) $_GET['id'];
+        $album_id = $_GET['id'];
         $username = $_SESSION['username'] ?? null;
 
         // average rating
@@ -121,7 +121,7 @@
         <form
           name="rating_form"
           method="post"
-          action="rating_handler.php?id=' . $_GET['id'] . '"
+          action="rating_handler.php?id=<?= $_GET['id'] ?>"
           onsubmit="return validateRating()">
           <fieldset class="star-rating">
             <legend>Rate this album</legend>
@@ -133,10 +133,9 @@
         </form>
       <?php endif; ?>
 
-
       <p class="member-comments-title"><strong>Member Comments:</strong></p>
       <?php
-        $album_id = (int) $_GET['id'];
+        $album_id = $_GET['id'];
         $stmt = $db->prepare("SELECT username, content, created_at
                               FROM comment
                               WHERE album_id = ?

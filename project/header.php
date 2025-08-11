@@ -18,6 +18,9 @@
             <li><a class="button" href="login.php">Login</a></li>
             <li><a class="button" href="register.php">Register</a></li>
           <?php endif; ?>
+          <?php if(isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin"): ?>
+            <li><a class="button" href="add_album.php">Add Album</a></li>
+          <?php endif; ?>
         </ul>
       </nav>
       <div class="navbar-end">
