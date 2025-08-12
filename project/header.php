@@ -41,7 +41,7 @@
               <a href="user_profile.php"><?= htmlspecialchars($_SESSION['username']) ?></a>
               <a href="update_profile.php">Update Profile</a>
             </div>
-            <a class="button logout-button" href="logout.php">Logout</a>
+            <a class="button logout-button" href="logout_handler.php">Logout</a>
           </div>
         <?php endif; ?>
       </div>
