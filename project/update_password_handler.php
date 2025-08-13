@@ -27,7 +27,7 @@
 
     if (!$errors) {
       // look up user and check password
-      $stmt = $db->prepare("SELECT password FROM user WHERE username = ?");
+      $stmt = $db->prepare("SELECT password_hash FROM user WHERE username = ?");
       $stmt->execute( [$_SESSION['username']] );
       $user = $stmt->fetch();
       
@@ -36,12 +36,13 @@
         exit;  
       }
 
-      if ($user['password'] !== $cur_password) {
+      if (!password_verify($cur_password, $user['password_hash'])) {
         $message = '<p class="error">Incorrect current password</p>';
         $link = '<a href="javascript: window.history.back()">Go Back</a>';
       } else {
-        $stmt2 = $db->prepare("UPDATE user SET password = ? WHERE username = ?");
-        $result = $stmt2->execute([$password, $_SESSION['username']]);
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt2 = $db->prepare("UPDATE user SET password_hash = ? WHERE username = ?");
+        $result = $stmt2->execute([$hash, $_SESSION['username']]);
 
         if (!$result) {
           $message = '<p class="error">Something went wrong, please re-submit password</p>';

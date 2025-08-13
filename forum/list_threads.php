@@ -45,7 +45,7 @@
         <select name="forum_id">
           <option value="" selected disabled>Select a forum</option>
           <?php  
-            $result = $db->query("SELECT * FROM forum ORDER BY forum_id");
+            $result = $db->prepare("SELECT * FROM forum ORDER BY forum_id");
       
             foreach($result as $row) {
               echo '<option value="'.$row['forum_id'].'">'.$row['forum_name'].'</option>';

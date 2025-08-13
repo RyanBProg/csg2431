@@ -7,35 +7,23 @@
   }
 
   if (isset($_POST['submit'])) {
-    $stmt = $db->prepare("SELECT * FROM user WHERE username = ? AND password = ?");
-    $stmt->execute([$_POST['uname'], $_POST['pword']]);
+    $stmt = $db->prepare("SELECT * FROM user WHERE username = ?");
+    $stmt->execute([$_POST['uname']]);
     $user = $stmt->fetch();
 
     if ($user) {
-      $_SESSION['username'] = $user['username'];
-      $_SESSION['access_level'] = $user['access_level'];
-      header('Location: list_threads.php');
-      exit;
+      if (password_verify($_POST['pword'], $user['password'])) {
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['access_level'] = $user['access_level'];
+        header('Location: list_threads.php');
+        exit;
+      } else {
+        echo 'Invalid password. Try Again.';
+      }
     } else {
-      echo 'Invalid credentials. Try Again.';
+      echo 'Invalid username. Try Again.';
     }
   }
-
-  // password hashing version
-  // if (isset($_POST['submit'])) {
-  //   $stmt = $db->prepare("SELECT * FROM user WHERE username = ?");
-  //   $stmt->execute([$_POST['uname']]);
-  //   $user = $stmt->fetch();
-
-  //   if ($user && password_verify($_POST['pword'], $user['password'])) {
-  //     $_SESSION['username'] = $user['username'];
-  //     $_SESSION['access_level'] = $user['access_level'];
-  //     header('Location: list_threads.php');
-  //     exit;
-  //   } else {
-  //     echo 'Invalid credentials. Try Again.';
-  //   }
-  // }
 ?>
 
 <!DOCTYPE html>

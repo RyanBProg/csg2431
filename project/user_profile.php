@@ -6,7 +6,7 @@
     exit;
   }
 
-  $stmt = $db->prepare("SELECT username, date_of_birth, YEAR(date_of_birth) AS birth_year, access_level, email, password, profile FROM user WHERE username = ?");
+  $stmt = $db->prepare("SELECT username, date_of_birth, YEAR(date_of_birth) AS birth_year, access_level, email, profile FROM user WHERE username = ?");
   $stmt->execute( [$_SESSION['username']] );
   $user = $stmt->fetch();
   

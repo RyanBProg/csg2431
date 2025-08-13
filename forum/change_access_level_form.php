@@ -26,7 +26,7 @@
 
     <ul style="display: grid; gap: 10px;">
       <?php  
-        $result = $db->query("SELECT * FROM user");
+        $result = $db->prepare("SELECT * FROM user");
         foreach($result as $row) {
           if ($_SESSION['username'] === $row['username']) {
             echo '<li>

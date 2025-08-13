@@ -51,9 +51,10 @@
     
       echo '<a href="javascript: window.history.back()">Return to form</a>';
     } else {
+      $hash = password_hash($password, PASSWORD_DEFAULT);
       $stmt = $db->prepare("INSERT INTO user (username, password, real_name, dob) 
                             VALUES (?, ?, ?, ?)");
-      $result = $stmt->execute( [$username, $password, $real_name, $dob] );
+      $result = $stmt->execute( [$username, $hash, $real_name, $dob] );
 
       if ($result) {
         $stmt2 = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");

@@ -55,9 +55,10 @@
     }
 
     if (!$errors) {
-      $stmt = $db->prepare("INSERT INTO user (username, password, date_of_birth, profile, email) 
+      $hash = password_hash($password, PASSWORD_DEFAULT);
+      $stmt = $db->prepare("INSERT INTO user (username, password_hash, date_of_birth, profile, email) 
                             VALUES (?, ?, ?, ?, ?)");
-      $result = $stmt->execute( [$username, $password, $dob, $profile, $email] );
+      $result = $stmt->execute( [$username, $hash, $dob, $profile, $email] );
 
       if ($result) {
         $stmt2 = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");

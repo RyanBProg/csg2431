@@ -20,11 +20,11 @@
     }
 
     if (!$errors) {
-      $stmt = $db->prepare("SELECT * FROM user WHERE username = ? AND password = ?");
-      $stmt->execute([$username, $password]);
+      $stmt = $db->prepare("SELECT * FROM user WHERE username = ?");
+      $stmt->execute([$username]);
       $user = $stmt->fetch();
 
-      if ($user) {
+      if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['access_level'] = $user['access_level'];
         header('Location: album_list.php');
