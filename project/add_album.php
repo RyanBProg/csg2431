@@ -1,7 +1,7 @@
 <?php
   require "db_connect.php";
 
-  if (!isset($_SESSION['username']) || $_SESSION['access_level'] !== 'admin') {
+  if (!isset($_SESSION['access_level']) || $_SESSION['access_level'] !== 'admin') {
     header('Location: album_list.php');
     exit;
   }
@@ -11,37 +11,57 @@
     $title = trim($_POST['title']) ?? '';
     $artist = trim($_POST['artist']) ?? '';
     $label = trim($_POST['label']) ?? '';
-    $release_date = $_POST['release_date'] ?? '';
+    $release_year = $_POST['release_year'] ?? '';
     $tracks = $_POST['tracks'] ?? [];
 
     // validate album fields
     if ($title === '') $errors[] = "Album title is required.";
     if ($artist === '') $errors[] = "Artist name is required.";
     if ($label === '') $errors[] = "Label is required.";
-    if ($release_date === '' || strtotime($release_date) === false) $errors[] = "Valid release date is required.";
+
+    // validate year
+    $currentYear = (int)date('Y');
+    if (!filter_var($release_year, FILTER_VALIDATE_INT) || $release_year < 1940 || $release_year > $currentYear) {
+        $errors[] = "Release year must be a valid integer between 1940 and $currentYear.";
+    }
 
     // validate tracks
     $valid_tracks = [];
     foreach ($tracks as $index => $track) {
       $track_title = trim($track['title'] ?? '');
-      $track_no = $track['track_no'] ?? 0;
-      $duration = $track['duration'] ?? 0;
+      $track_no = (int)($track['track_no'] ?? 0);
+      $duration = (int)($track['duration'] ?? 0);
 
-      if ($track_title !== '' && $track_no > 0 && $duration > 0) {
+      if ($track_title !== '' && $track_no > 0 && $duration > 0 && $duration <= 3599) {
         $valid_tracks[] = [
           'title' => $track_title,
           'track_no' => $track_no,
           'duration' => $duration
         ];
       } elseif ($track_title !== '' || $track_no > 0 || $duration > 0) {
-        $errors[] = "Track " . ($index + 1) . " has incomplete data.";
+        if ($duration > 3599) {
+          $errors[] = "Track " . ($index + 1) . " duration cannot exceed 3599 seconds.";
+        } else {
+          $errors[] = "Track " . ($index + 1) . " has incomplete data.";
+        }
+      }
+    }
+
+    // title + release_year duplicate check
+    if (!$errors) {
+      $check_stmt = $db->prepare("SELECT COUNT(*) FROM album WHERE title = ? AND release_year = ?");
+      $check_stmt->execute([$title, $release_year]);
+      $existing_count = $check_stmt->fetchColumn();
+
+      if ($existing_count > 0) {
+        $errors[] = "An album with the same title and release year already exists.";
       }
     }
 
     // if no errors, insert into DB
     if (!$errors) {
-      $stmt = $db->prepare("INSERT INTO album (title, artist, label, release_date) VALUES (?, ?, ?, ?)");
-      $result = $stmt->execute([$title, $artist, $label, $release_date]);
+      $stmt = $db->prepare("INSERT INTO album (title, artist, label, release_year) VALUES (?, ?, ?, ?)");
+      $result = $stmt->execute([$title, $artist, $label, $release_year]);
 
       if ($result) {
         $album_id = $db->lastInsertId();
@@ -73,7 +93,7 @@
 
 <main>
   <h1 class="login-register-title">Add New Album</h1>
-  <form class="form" method="post" name="album_form" action="add_album.php" onsubmit="return validateAlbum()">
+  <form class="form" method="post" name="album_form" action="add_album.php">
     <label class="form-label">
       <span>Album Title<sup>*</sup>:</span>
       <input type="text" name="title" value="<?= htmlspecialchars($title ?? '') ?>" />
@@ -91,7 +111,7 @@
 
     <label class="form-label">
       <span>Release Date<sup>*</sup>:</span>
-      <input type="date" name="release_date" value="<?= htmlspecialchars($release_date ?? '') ?>" />
+      <input type="number" name="release_year" value="<?= htmlspecialchars($release_year ?? '') ?>" />
     </label>
 
     <fieldset class="track-fieldset">

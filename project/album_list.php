@@ -5,7 +5,7 @@
   $page_description = "A list of our album selection";
   require "header.php";
 
-  $allowed_orders = ['title', 'artist', 'release_date'];
+  $allowed_orders = ['title', 'artist', 'release_year'];
   $order_by = 'title';
 
   if (isset($_GET['order']) && in_array($_GET['order'], $allowed_orders)) {
@@ -25,7 +25,7 @@
     }
   }
 
-  $sql = "SELECT album_id, title, artist, YEAR(release_date) AS release_year 
+  $sql = "SELECT album_id, title, artist, release_year
           FROM album 
           $where_clause
           ORDER BY $order_by ASC";
@@ -44,7 +44,7 @@
         <select name="order" onchange="this.form.submit()">
           <option value="title" <?= $order_by === 'title' ? 'selected' : '' ?>>Name</option>
           <option value="artist" <?= $order_by === 'artist' ? 'selected' : '' ?>>Artist</option>
-          <option value="release_date" <?= $order_by === 'release_date' ? 'selected' : '' ?>>Year</option>
+          <option value="release_year" <?= $order_by === 'release_year' ? 'selected' : '' ?>>Year</option>
         </select>
       </label>
     </form>

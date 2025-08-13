@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 11, 2025 at 04:49 PM
+-- Generation Time: Aug 13, 2025 at 06:59 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,7 +34,7 @@ CREATE TABLE `album` (
   `title` varchar(100) NOT NULL,
   `artist` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
-  `release_date` date NOT NULL
+  `release_year` smallint(5) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -45,11 +45,11 @@ CREATE TABLE `album` (
 -- Dumping data for table `album`
 --
 
-INSERT INTO `album` (`album_id`, `title`, `artist`, `label`, `release_date`) VALUES
-(1, 'What\'s Going On', 'Marvin Gaye', 'UMG Recordings', '1971-05-21'),
-(2, 'Texas Moon', 'Khruangbin', 'Columbia Records', '2022-02-18'),
-(3, 'Mixtape 1', 'Ryan', 'Garage Recordings', '2025-07-08'),
-(4, 'Mixtape 2', 'Ryan', 'Garage Recordings', '2025-08-01');
+INSERT INTO `album` (`album_id`, `title`, `artist`, `label`, `release_year`) VALUES
+(1, 'What\'s Going On', 'Marvin Gaye', 'UMG Recordings', 1971),
+(2, 'Texas Moon', 'Khruangbin', 'Columbia Records', 2022),
+(3, 'Mixtape 1', 'Ryan', 'Garage Recordings', 2025),
+(4, 'Mixtape 2', 'Ryan', 'Garage Recordings', 1960);
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,9 @@ INSERT INTO `comment` (`username`, `album_id`, `content`, `created_at`, `comment
 ('ryan123', 3, 'hi', '2025-08-10 12:29:23', 7),
 ('ryan123', 3, 'its me', '2025-08-10 12:29:30', 8),
 ('ryan123', 1, 'soi', '2025-08-10 12:49:39', 9),
-('testing', 3, '🔥', '2025-08-10 16:11:34', 11);
+('testing', 3, '🔥', '2025-08-10 16:11:34', 11),
+('ryan123', 3, 'oimerf', '2025-08-11 17:13:01', 16),
+('ryan123', 3, 'test', '2025-08-13 15:10:20', 17);
 
 -- --------------------------------------------------------
 
@@ -113,7 +115,7 @@ CREATE TABLE `rating` (
 --
 
 INSERT INTO `rating` (`rating_id`, `username`, `album_id`, `value`, `created_at`) VALUES
-(4, 'ryan123', 3, 4, '2025-08-10 12:40:17'),
+(4, 'ryan123', 3, 3, '2025-08-13 15:10:16'),
 (12, 'ryan123', 1, 3, '2025-08-10 15:54:55'),
 (38, 'testing', 1, 1, '2025-08-10 16:10:06'),
 (41, 'testing', 3, 5, '2025-08-10 16:10:20'),
@@ -194,7 +196,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`username`, `password`, `date_of_birth`, `profile`, `email`, `access_level`, `favourite_album_id`, `favourite_track_id`) VALUES
 ('admin123', 'password', '1001-01-01', 'I\'m the friendly admin!', 'admin123@gmail.com', 'admin', NULL, NULL),
-('ryan123', 'password', '1909-08-19', 'Hi there, welcome to my profile!!', 'ryan@gmail.com', 'member', NULL, NULL),
+('ryan123', 'password', '1909-08-19', 'Hi there, welcome to my profile!', 'ryan@gmail.com', 'member', NULL, NULL),
 ('testing', 'password', '1909-04-21', 'hello', 'testing@gmail.com', 'member', NULL, NULL);
 
 --
@@ -206,7 +208,7 @@ INSERT INTO `user` (`username`, `password`, `date_of_birth`, `profile`, `email`,
 --
 ALTER TABLE `album`
   ADD PRIMARY KEY (`album_id`),
-  ADD UNIQUE KEY `title_year_unique` (`title`,`release_date`) USING BTREE;
+  ADD UNIQUE KEY `title_year_unique` (`title`,`release_year`);
 
 --
 -- Indexes for table `comment`
@@ -249,25 +251,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `album_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `album_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `comment_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `rating_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `rating_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `track`
 --
 ALTER TABLE `track`
-  MODIFY `track_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `track_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Constraints for dumped tables

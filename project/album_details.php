@@ -7,7 +7,7 @@
   }
 
   // fetch album and tracks
-  $stmt = $db->prepare("SELECT a.album_id, a.title AS album_title, a.artist, a.label, a.release_date, 
+  $stmt = $db->prepare("SELECT a.album_id, a.title AS album_title, a.artist, a.label, a.release_year, 
                               t.track_id, t.title AS track_title, t.duration_sec, t.track_no
                         FROM album a
                         LEFT JOIN track t ON a.album_id = t.album_id
@@ -27,9 +27,10 @@
     'title' => $rows[0]['album_title'],
     'artist' => $rows[0]['artist'],
     'label' => $rows[0]['label'],
-    'release_date' => $rows[0]['release_date'],
+    'release_year' => $rows[0]['release_year'],
     'tracks' => []
   ];
+  $total_duration = 0;
 
   foreach ($rows as $row) {
     if ($row['track_id'] !== null) {
@@ -39,6 +40,7 @@
         'duration_sec' => $row['duration_sec'],
         'track_no' => $row['track_no']
       ];
+      $total_duration += (int)$row['duration_sec'];
     }
   }
 
@@ -48,11 +50,17 @@
 ?>
 
 <main>
-  <h1><?= htmlspecialchars($album['title']) ?> (<?= date('Y', strtotime($album['release_date'])) ?>)</h1>
+  <h1><?= htmlspecialchars($album['title']) ?> (<?= $album['release_year'] ?>)</h1>
   <div class="column-container">
     <section>
       <p><strong>Artist:</strong> <?= htmlspecialchars($album['artist']) ?></p>
       <p><strong>Label:</strong> <?= htmlspecialchars($album['label']) ?></p>
+      <?php if ($total_duration > 0 && $total_duration < 3600): ?>
+        <p><strong>Total Duration:</strong> <?= gmdate("i:s", $total_duration) ?></p>
+      <?php elseif($total_duration > 0 && $total_duration >= 3600): ?>
+        <p><strong>Total Duration:</strong> <?= gmdate("H:i:s", $total_duration) ?></p>
+      <?php endif; ?>
+
       <p><strong>Track List:</strong></p>
 
       <?php if (!empty($album['tracks'])): ?>

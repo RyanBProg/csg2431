@@ -158,7 +158,7 @@ function validateComment() {
 
 function handleDelete() {
   return confirm(
-    "Are you sure you want to delete this album? This action cannot be undone."
+    "Are you sure you want to delete this album? Deleting the album will delete all tracks, ratings and comments associated with it"
   );
 }
 
@@ -227,12 +227,12 @@ function validateAlbum() {
   form.title.style.borderColor = "";
   form.artist.style.borderColor = "";
   form.label.style.borderColor = "";
-  form.release_date.style.borderColor = "";
+  form.release_year.style.borderColor = "";
 
   form.title.value = form.title.value.trim();
   form.artist.value = form.artist.value.trim();
   form.label.value = form.label.value.trim();
-  form.release_date.value = form.release_date.value.trim();
+  form.release_year.value = form.release_year.value.trim();
 
   if (form.title.value === "") {
     errors.push("Title is required.");
@@ -249,9 +249,19 @@ function validateAlbum() {
     form.label.style.borderColor = "red";
   }
 
-  if (form.release_date.value === "") {
+  if (form.release_year.value === "") {
     errors.push("Release date is required.");
-    form.release_date.style.borderColor = "red";
+    form.release_year.style.borderColor = "red";
+  }
+
+  const year = parseInt(form.release_year.value, 10);
+  const currentYear = new Date().getFullYear();
+
+  if (isNaN(year) || year < 1940 || year > currentYear) {
+    errors.push(
+      `Release year must be an integer between 1940 and ${currentYear}.`
+    );
+    form.release_year.style.borderColor = "red";
   }
 
   if (errors.length > 0) {

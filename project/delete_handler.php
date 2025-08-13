@@ -1,7 +1,7 @@
 <?php
   require "db_connect.php";
 
-  if (!isset($_SESSION['username']) || !isset($_SESSION['access_level']) || $_SESSION['access_level'] !== 'admin') {
+  if (!isset($_SESSION['access_level']) || $_SESSION['access_level'] !== 'admin') {
     header("Location: album_list.php");
     exit;
   }
