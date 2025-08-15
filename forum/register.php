@@ -57,13 +57,15 @@
       $result = $stmt->execute( [$username, $hash, $real_name, $dob] );
 
       if ($result) {
-        $stmt2 = $db->prepare("SELECT username, access_level FROM user WHERE username = ?");
+        $stmt2 = $db->prepare("SELECT username, access_level, dob, real_name FROM user WHERE username = ?");
         $stmt2->execute([$username]);
         $user = $stmt2->fetch();
 
         if ($user) {
           $_SESSION['username'] = $user['username'];
           $_SESSION['access_level'] = $user['access_level'];
+
+          logEvent($db, "Register Account", $_SESSION['username'], 'real_name: '.$user['real_name'].' | dob: '.$user['dob']);
           header('Location: list_threads.php');
           exit;
         } else {

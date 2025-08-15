@@ -38,6 +38,7 @@
       $result = $stmt->execute( [$_SESSION['username'], $title, $content, $forum_id] );
 
       if ($result) {
+        logEvent($db, "Post Thread", $_SESSION['username'], 'thread_id:'.$db->lastInsertId());
         header("Location: view_thread.php?id=" . $db->lastInsertId());
         exit;
       } else {

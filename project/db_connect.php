@@ -1,6 +1,13 @@
 <?php
   // start or resume a session
   session_start();
+
+  // log an event to the database
+  function logEvent($db, $eventType, $eventDetails) {
+    $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $log_stmt = $db->prepare("INSERT INTO log (ip_address, event_type, event_details) VALUES (?, ?, ?)");
+    $log_stmt->execute([$ipAddress, $eventType, $eventDetails]);
+  }
   
   try { 
     $db = new PDO('mysql:host=localhost;port=6033;dbname=records_data', 'root', '');

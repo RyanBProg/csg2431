@@ -89,7 +89,7 @@
           <option value="" disabled>Select a forum</option>
           <?php  
             // Select details of all forums
-            $result = $db->prepare("SELECT * FROM forum ORDER BY forum_id");
+            $result = $db->query("SELECT * FROM forum ORDER BY forum_id");
       
             // Loop through each forum to generate an option of the drop-down list
             foreach($result as $row) {

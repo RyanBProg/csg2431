@@ -7,6 +7,10 @@
   }
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['album_id'])) {
+    $selectStmt = $db->prepare("SELECT title, release_year FROM album WHERE album_id = ?");
+    $selectStmt->execute([$_POST['album_id']]);
+    $album = $selectStmt->fetch();
+
     $deleteStmt = $db->prepare("DELETE FROM album WHERE album_id = ?");
     $result = $deleteStmt->execute([$_POST['album_id']]);
 
@@ -16,6 +20,8 @@
       //print_r($deleteStmt->errorInfo());
       exit;
     }
+
+    logEvent($db, 'Album Deleted', $album['title'].' ('.$album['release_year'].')'.' deleted by '.$_SESSION['username']);
 
     header("Location: album_list.php");
     exit;

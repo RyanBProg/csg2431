@@ -68,6 +68,7 @@
         if ($user) {
           $_SESSION['username'] = $user['username'];
           $_SESSION['access_level'] = $user['access_level'];
+          logEvent($db, 'Member Registration', $_SESSION['username'].' registered as a member');
           header('Location: album_list.php');
           exit;
         } else {

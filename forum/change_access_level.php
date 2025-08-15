@@ -43,6 +43,7 @@
   $result = $stmt->execute( [$new_access_level, $_GET['username']] );
 
   if ($result) {
+    logEvent($db, "Change Access Level", $_SESSION['username'], "username: ".$_GET['username']." | access_level: ".$new_access_level);
     header('Location: change_access_level_form.php');
     exit;
   } else {

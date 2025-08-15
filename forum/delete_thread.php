@@ -23,6 +23,7 @@
 
   // Check if a row was deleted
   if ($stmt->rowCount() === 1) {
+      logEvent($db, "Delete Thread", $_SESSION['username'], 'thread_id:'.$db->lastInsertId());
       echo "<p>Thread deleted successfully.</p>";
       echo '<p><a href="list_threads.php">Back to thread list</a></p>';
   } else {

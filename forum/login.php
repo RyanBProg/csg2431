@@ -15,13 +15,16 @@
       if (password_verify($_POST['pword'], $user['password'])) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['access_level'] = $user['access_level'];
+        logEvent($db, "Login (Successful)", $_SESSION['username'], null);
         header('Location: list_threads.php');
         exit;
       } else {
         echo 'Invalid password. Try Again.';
+        logEvent($db, "Login (Failed)", null, "username: ".$_POST['uname']);
       }
     } else {
       echo 'Invalid username. Try Again.';
+      logEvent($db, "Login (Failed)", null, "username: ".$_POST['uname']);
     }
   }
 ?>

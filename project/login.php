@@ -27,9 +27,11 @@
       if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['access_level'] = $user['access_level'];
+        logEvent($db, 'Login', $_SESSION['username'].' logged in');
         header('Location: album_list.php');
         exit;
       } else {
+        logEvent($db, 'Login Attempt', 'Failed login attempt with username of '.$username);
         $errors[] = 'Invalid credentials, try again!';
       }
     }
