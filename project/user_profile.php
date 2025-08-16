@@ -64,7 +64,7 @@ require "header.php";
 
     <?php if ($fav_album): ?>
       <p><strong>Favourite Album:</strong>
-        <a href="album_details.php?id=<?= $fav_album['album_id'] ?>">
+        <a href="album_details.php?id=<?= urlencode($fav_album['album_id']) ?>">
           <?= htmlspecialchars($fav_album['artist']) ?>,
           "<?= htmlspecialchars($fav_album['title']) ?>"
           (<?= htmlspecialchars($fav_album['release_year']) ?>)
@@ -74,7 +74,7 @@ require "header.php";
 
     <?php if ($fav_track): ?>
       <p><strong>Favourite Track:</strong>
-        <a href="album_details.php?id=<?= $fav_track['album_id'] ?>">
+        <a href="album_details.php?id=<?= urlencode($fav_track['album_id']) ?>">
           <?= htmlspecialchars($fav_track['artist']) ?>,
           "<?= htmlspecialchars($fav_track['track_title']) ?>"
         </a>
@@ -87,7 +87,7 @@ require "header.php";
     
     <?php if ($fav_album): ?>
       <p><strong>Favourite Album:</strong>
-        <a href="album_details.php?id=<?= $fav_album['album_id'] ?>">
+        <a href="album_details.php?id=<?= urlencode($fav_album['album_id']) ?>">
           <?= htmlspecialchars($fav_album['artist']) ?>,
           "<?= htmlspecialchars($fav_album['title']) ?>"
           (<?= htmlspecialchars($fav_album['release_year']) ?>)
@@ -96,7 +96,7 @@ require "header.php";
     <?php endif; ?>
     <?php if ($fav_track): ?>
       <p><strong>Favourite Track:</strong>
-        <a href="album_details.php?id=<?= $fav_track['album_id'] ?>">
+        <a href="album_details.php?id=<?= urlencode($fav_track['album_id']) ?>">
           <?= htmlspecialchars($fav_track['artist']) ?>,
           "<?= htmlspecialchars($fav_track['track_title']) ?>"
         </a>

@@ -30,18 +30,18 @@
         foreach($result as $row) {
           if ($_SESSION['username'] === $row['username']) {
             echo '<li>
-            <span>' . $row['username'] . ' (' . $row['access_level'] . ')</span> - 
+            <span>' . htmlspecialchars($row['username']) . ' (' . htmlspecialchars($row['access_level']) . ')</span> - 
             <span>Can\'t change your own access level</span>
             </li>';
           } else if ($row['access_level'] === "member") {
             echo '<li>
-            <span>' . $row['username'] . ' (' . $row['access_level'] . ')</span> - 
-            <a href="change_access_level.php?username=' . $row['username'] . '">Promote</a>
+            <span>' . htmlspecialchars($row['username']) . ' (' . htmlspecialchars($row['access_level']) . ')</span> - 
+            <a href="change_access_level.php?username=' . htmlspecialchars($row['username']) . '">Promote</a>
             </li>';
           } else {
             echo '<li>
-            <span>' . $row['username'] . ' (' . $row['access_level'] . ')</span> - 
-            <a href="change_access_level.php?username=' . $row['username'] . '">Demote</a>
+            <span>' . htmlspecialchars($row['username']) . ' (' . htmlspecialchars($row['access_level']) . ')</span> - 
+            <a href="change_access_level.php?username=' . htmlspecialchars($row['username']) . '">Demote</a>
             </li>';
           }
         }

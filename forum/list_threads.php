@@ -16,7 +16,7 @@
     <!-- auth -->
     <?php
       if (isset($_SESSION['username']) && isset($_SESSION['access_level'])) {
-        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p>
+        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . htmlspecialchars($_SESSION['username']) . ' (' . htmlspecialchars($_SESSION['access_level']) . ')</p>
         <a href="logout.php">Logout</a>';
       } else {
         echo '<p style="display: inline; margin-right: 5px;">You are not logged in</p>
@@ -49,7 +49,7 @@
             $result = $db->query("SELECT * FROM forum ORDER BY forum_id");
       
             foreach($result as $row) {
-              echo '<option value="'.$row['forum_id'].'">'.$row['forum_name'].'</option>';
+              echo '<option value="'.htmlspecialchars($row['forum_id']).'">'.htmlspecialchars($row['forum_name']).'</option>';
       
               if (isset($_GET['forum_id']) && $_GET['forum_id'] == $row['forum_id']) {
                 $current_forum_name = $row['forum_name'];
@@ -62,7 +62,7 @@
     
     <?php
       if (isset($_GET['forum_id'])) {
-        echo '<h4>'.$current_forum_name.' Threads</h4>';
+        echo '<h4>'.htmlspecialchars($current_forum_name).' Threads</h4>';
 
         $stmt = $db->prepare("SELECT t.thread_id, t.username, t.title, UNIX_TIMESTAMP(t.post_date) AS post_date, t.forum_id, f.forum_name
                   FROM thread t
@@ -90,10 +90,10 @@
         echo "<p>There " . ($thread_count === 1 ? "is" : "are") . " $thread_count $thread_word.</p>";
 
         foreach($result_data as $row) {
-          echo '<p><a href="view_thread.php?id='.$row['thread_id'].'">'.$row['title'].'</a><br />';
-          echo '<small>Posted by <a href="view_profile.php?username='.$row['username'].'">'.$row['username'].'</a>
-          in <a href="list_threads.php?forum_id='.$row['forum_id'].'">'.$row['forum_name'].'</a>
-          on '.date('d M Y, H:i', $row['post_date']).'
+          echo '<p><a href="view_thread.php?id='.urlencode($row['thread_id']).'">'.htmlspecialchars($row['title']).'</a><br />';
+          echo '<small>Posted by <a href="view_profile.php?username='.urlencode($row['username']).'">'.htmlspecialchars($row['username']).'</a>
+          in <a href="list_threads.php?forum_id='.urlencode($row['forum_id']).'">'.htmlspecialchars($row['forum_name']).'</a>
+          on '.date('d M Y, H:i', htmlspecialchars($row['post_date'])).'
           </small></p>';
         }
       } else {

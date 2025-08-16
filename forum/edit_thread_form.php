@@ -76,12 +76,12 @@
     <form class="thread-form" name="edit_thread" method="post" action="edit_thread.php" onsubmit="return validateForm()">
 	
       <label for="title"><strong>Title:</strong></label>
-      <?php echo '<input type="text" id="title" name="title" value="'.$thread['title'].'" />'; ?>
+      <?php echo '<input type="text" id="title" name="title" value="'.htmlspecialchars($thread['title']).'" />'; ?>
 
       <br />
 
       <label for="content"><strong>Content:</strong></label>
-      <textarea id="content" name="content" rows="8"><?php echo htmlentities($thread['content']); ?></textarea>
+      <textarea id="content" name="content" rows="8"><?php echo htmlspecialchars($thread['content']); ?></textarea>
 
       <div class="forum-group">
         <label for="forum"><strong>Select Forum:</strong></label>
@@ -93,13 +93,13 @@
       
             // Loop through each forum to generate an option of the drop-down list
             foreach($result as $row) {
-              echo '<option value="'.$row['forum_id'].'"'. (($thread['forum_id'] ?? '') == $row['forum_id'] ? ' selected' : '') .'>'.$row['forum_name'].'</option>';
+              echo '<option value="'.htmlspecialchars($row['forum_id']).'"'. (($thread['forum_id'] ?? '') == $row['forum_id'] ? ' selected' : '') .'>'.htmlspecialchars($row['forum_name']).'</option>';
             }
           ?>
         </select>
       </div>
 
-      <input type="hidden" name="thread_id" value="<?php echo $thread['thread_id']; ?>" />
+      <input type="hidden" name="thread_id" value="<?php echo htmlspecialchars($thread['thread_id']); ?>" />
 	
       <input type="submit" name="submit" value="Submit" />
     </form>

@@ -28,7 +28,7 @@
 
     if ($errors){
       foreach ($errors as $error) {
-        echo "<p>".$error."</p>";
+        echo "<p>" . $error . "</p>";
       }
     
       echo '<a href="javascript: window.history.back()">Return to form</a>';
@@ -39,7 +39,7 @@
       $result = $stmt->execute( [$title, $content, $forum_id, $_POST["thread_id"], $_SESSION['username']] );
 
       if ($result) {
-        header("Location: view_thread.php?id=" . $_POST["thread_id"]);
+        header("Location: view_thread.php?id=" . urlencode($_POST["thread_id"]));
         exit;
       } else {
         echo "<p>Something went wrong.</p>";

@@ -72,7 +72,7 @@
           echo "<p>Registration succeeded, but failed to fetch user info.</p>";
         }
       } else if ($stmt->errorCode() === "23000") {
-        echo '<p>Username "'.$_POST['uname'].'" already taken</p>';
+        echo '<p>Username "'.htmlspecialchars($_POST['uname']).'" already taken</p>';
         echo '<a href="javascript: window.history.back()">Return to form</a>';
         // print_r($stmt->errorInfo());
       } else {

@@ -25,11 +25,11 @@
 
       <?php foreach($result as $row): ?>
         <tr>
-          <td><?= htmlentities($row['log_date'] ?? '-') ?></td>
-          <td><?= htmlentities($row['ip_address'] ?? '-') ?></td>
+          <td><?= htmlspecialchars($row['log_date'] ?? '-') ?></td>
+          <td><?= htmlspecialchars($row['ip_address'] ?? '-') ?></td>
           <td>
-            <strong><?= htmlentities($row['event_type'] ?? '-') ?></strong> - 
-            <?= htmlentities($row['event_details'] ?? '-') ?>
+            <strong><?= htmlspecialchars($row['event_type'] ?? '-') ?></strong> - 
+            <?= htmlspecialchars($row['event_details'] ?? '-') ?>
           </td>
         </tr>
       <?php endforeach; ?>

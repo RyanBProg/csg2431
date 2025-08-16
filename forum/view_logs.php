@@ -21,7 +21,7 @@
     <!-- auth -->
     <?php
       if (isset($_SESSION['username']) && isset($_SESSION['access_level'])) {
-        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p>
+        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . htmlspecialchars($_SESSION['username']) . ' (' . htmlspecialchars($_SESSION['access_level']) . ')</p>
         <a href="logout.php">Logout</a>';
       } else {
         echo '<p style="display: inline; margin-right: 5px;">You are not logged in</p>
@@ -45,10 +45,10 @@
 
         foreach($result as $row) {
           echo '<tr>
-                  <td>' . htmlentities($row['log_date'] ?? '-') . '</td>
-                  <td>' . htmlentities($row['event_type'] ?? '-') . '</td>
-                  <td>' . htmlentities($row['ip_address'] ?? '-') . '</td>
-                  <td>' . htmlentities($row['event_details'] ?? '-') . '</td>
+                  <td>' . htmlspecialchars($row['log_date'] ?? '-') . '</td>
+                  <td>' . htmlspecialchars($row['event_type'] ?? '-') . '</td>
+                  <td>' . htmlspecialchars($row['ip_address'] ?? '-') . '</td>
+                  <td>' . htmlspecialchars($row['event_details'] ?? '-') . '</td>
                 </tr>';
         }
       ?>

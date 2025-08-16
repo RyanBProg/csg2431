@@ -51,7 +51,7 @@
 
 <main>
   <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px">
-    <h1 style="margin-bottom: 0"><?= htmlspecialchars($album['title']) ?> (<?= $album['release_year'] ?>)</h1>
+    <h1 style="margin-bottom: 0"><?= htmlspecialchars($album['title']) ?> (<?= htmlspecialchars($album['release_year']) ?>)</h1>
     
     <!-- favourite album button -->
     <?php if(isset($_SESSION['username'])): ?>

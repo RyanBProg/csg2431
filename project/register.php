@@ -78,9 +78,9 @@
         $errorInfo = $stmt->errorInfo();
 
         if (strpos($errorInfo[2], 'PRIMARY')) {
-          $errors[] = 'Username "' . $_POST['uname'] . '" is already taken.';
+          $errors[] = 'Username "' . htmlspecialchars($_POST['uname']) . '" is already taken.';
         } else if (strpos($errorInfo[2], 'email')) {
-          $errors[] = 'Email "' . $_POST['email'] . '" is already registered.';
+          $errors[] = 'Email "' . htmlspecialchars($_POST['email']) . '" is already registered.';
         } else {
           $errors[] = 'Duplicate entry found. Please use different credentials.';
         }

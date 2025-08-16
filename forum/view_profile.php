@@ -23,7 +23,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><?php echo htmlentities($user['title']); ?></title>
+    <title><?php echo htmlspecialchars($user['title']); ?></title>
     <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="View thread page of forum scenario" />
     <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
@@ -31,7 +31,7 @@
 
   <body>
     <?php
-      echo '<h3>Viewing Profile of "'.htmlentities($user['username']).'"</h3>';
+      echo '<h3>Viewing Profile of "'.htmlspecialchars($user['username']).'"</h3>';
     ?>
     <p><a href="javascript:history.back()">Back</a></p>
 
@@ -40,11 +40,11 @@
       if (empty($user['real_name'])) {
         echo '<p><strong>Real Name:</strong> <em>Not Disclosed</em></p>';
       } else {
-        echo '<p><strong>Real Name:</strong> '.htmlentities($user['real_name']).'</p>';
+        echo '<p><strong>Real Name:</strong> '.htmlspecialchars($user['real_name']).'</p>';
       }
 
-      echo '<p><strong>Born In:</strong> '.htmlentities($user['birth_year']).'</p>';
-      echo '<p><strong>Post Count:</strong> '.htmlentities($user['thread_count']).'</p>';
+      echo '<p><strong>Born In:</strong> '.htmlspecialchars($user['birth_year']).'</p>';
+      echo '<p><strong>Post Count:</strong> '.htmlspecialchars($user['thread_count']).'</p>';
     ?>
   </body>
 </html>

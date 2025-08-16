@@ -7,24 +7,40 @@
   }
 
   if (isset($_POST['submit'])) {
-    $stmt = $db->prepare("SELECT * FROM user WHERE username = ?");
-    $stmt->execute([$_POST['uname']]);
-    $user = $stmt->fetch();
+    $errors = [];
 
-    if ($user) {
-      if (password_verify($_POST['pword'], $user['password'])) {
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['access_level'] = $user['access_level'];
-        logEvent($db, "Login (Successful)", $_SESSION['username'], null);
-        header('Location: list_threads.php');
-        exit;
+    // trim all input values
+    $username = trim($_POST["uname"]) ?? "";
+    $password = trim($_POST["pword"]) ?? "";
+
+    if ($username === "") {
+      $errors[] = "Username is empty";
+    }
+
+    if ($password === "") {
+      $errors[] = "Password is empty";
+    }
+
+    if (!$errors) {
+      $stmt = $db->prepare("SELECT * FROM user WHERE username = ?");
+      $stmt->execute([$username]);
+      $user = $stmt->fetch();
+
+      if ($user) {
+        if (password_verify($password, $user['password'])) {
+          $_SESSION['username'] = $user['username'];
+          $_SESSION['access_level'] = $user['access_level'];
+          logEvent($db, "Login (Successful)", $_SESSION['username'], null);
+          header('Location: list_threads.php');
+          exit;
+        } else {
+          echo 'Invalid password. Try Again.';
+          logEvent($db, "Login (Failed)", null, "username: ".$username);
+        }
       } else {
-        echo 'Invalid password. Try Again.';
-        logEvent($db, "Login (Failed)", null, "username: ".$_POST['uname']);
+        echo 'Invalid username. Try Again.';
+        logEvent($db, "Login (Failed)", null, "username: ".$username);
       }
-    } else {
-      echo 'Invalid username. Try Again.';
-      logEvent($db, "Login (Failed)", null, "username: ".$_POST['uname']);
     }
   }
 ?>
@@ -35,7 +51,7 @@
     <title>Login Form</title>
     <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="Login Form" />
-        <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
     <script defer>
       function validateForm() {
         const form = document.login_form;
@@ -77,5 +93,11 @@
         <input type="submit" name="submit" value="Log In" class="middle" />
       </fieldset>
     </form>
+
+    <?php if (isset($errors)): ?>
+      <?php foreach ($errors as $error): ?>
+        <p class='error'><?= $error ?></p>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </body>
 </html>

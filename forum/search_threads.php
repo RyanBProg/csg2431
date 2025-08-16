@@ -16,7 +16,7 @@
     <!-- auth -->
     <?php
       if (isset($_SESSION['username']) && isset($_SESSION['access_level'])) {
-        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p>
+        echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . htmlspecialchars($_SESSION['username']) . ' (' . htmlspecialchars($_SESSION['access_level']) . ')</p>
         <a href="logout.php">Logout</a>';
       } else {
         echo '<p style="display: inline; margin-right: 5px;">You are not logged in</p>
@@ -47,9 +47,8 @@
     
     <?php
       // Execute a query if there's a search term in the URL data
-      if (isset($_GET['search_term']))
-      {
-        echo '<h4>Search results for "'.$_GET['search_term'].'"</h4>';
+      if (isset($_GET['search_term'])) {
+        echo '<h4>Search results for "'.htmlspecialchars($_GET['search_term']).'"</h4>';
         
         // Put wildcard characters on each end of the search term
         $search_term = '%'.$_GET['search_term'].'%';
@@ -68,19 +67,17 @@
         $result_data = $stmt->fetchAll();
         
         // Display results or a "no results" message as appropriate
-        if (count($result_data) > 0)
-        {          
+        if (count($result_data) > 0) {          
           $thread_count = count($result_data);
           $thread_word = $thread_count === 1 ? 'thread' : 'threads';
           echo "<p>There " . ($thread_count === 1 ? "is" : "are") . " $thread_count $thread_word.</p>";
 
           // Loop through results to display links to threads
-          foreach($result_data as $row)
-          {
-            echo '<p><a href="view_thread.php?id='.$row['thread_id'].'">'.$row['title'].'</a><br />';
-            echo '<small>Posted by <a href="view_profile.php?username='.$row['username'].'">'.$row['username'].'</a> 
-            in <a href="list_threads.php?forum_id='.$row['forum_id'].'">'.$row['forum_name'].'</a>
-            on '.date('d M Y, H:i', $row['post_date']).'</small></p>';
+          foreach($result_data as $row) {
+            echo '<p><a href="view_thread.php?id='.htmlspecialchars($row['thread_id']).'">'.htmlspecialchars($row['title']).'</a><br />';
+            echo '<small>Posted by <a href="view_profile.php?username='.htmlspecialchars($row['username']).'">'.htmlspecialchars($row['username']).'</a> 
+            in <a href="list_threads.php?forum_id='.htmlspecialchars($row['forum_id']).'">'.htmlspecialchars($row['forum_name']).'</a>
+            on '.date('d M Y, H:i', htmlspecialchars($row['post_date'])).'</small></p>';
           }
         }
         else

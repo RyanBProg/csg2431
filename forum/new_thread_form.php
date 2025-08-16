@@ -54,7 +54,7 @@
   <body>
     <h3>New Thread</h3>
     <?php 
-      echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p><a href="logout.php">Logout</a>';
+      echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . htmlspecialchars($_SESSION['username']) . ' (' . htmlspecialchars($_SESSION['access_level']) . ')</p><a href="logout.php">Logout</a>';
     ?>
     <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
     <form class="thread-form" name="new_thread" method="post" action="new_thread.php" onsubmit="return validateForm()">
@@ -77,7 +77,7 @@
       
             // Loop through each forum to generate an option of the drop-down list
             foreach($result as $row) {
-              echo '<option value="'.$row['forum_id'].'">'.$row['forum_name'].'</option>';
+              echo '<option value="'.htmlspecialchars($row['forum_id']).'">'.htmlspecialchars($row['forum_name']).'</option>';
             }
           ?>
         </select>

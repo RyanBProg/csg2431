@@ -23,7 +23,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><?php echo htmlentities($thread['title']); ?></title>
+    <title><?php echo htmlspecialchars($thread['title']); ?></title>
     <meta name="author" content="Ryan Bowler" />
     <meta name="description" content="View thread page of forum scenario" />
     <link rel="stylesheet" type="text/css" href="forum_stylesheet.css" />
@@ -53,24 +53,24 @@
     <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
 		<?php
       // Display the thread's details
-      echo '<h4>'.htmlentities($thread['title']).'</h4>';
+      echo '<h4>'.htmlspecialchars($thread['title']).'</h4>';
 
-      echo '<p><small><em>Posted by <a href="view_profile.php?username='.$thread['username'].'">'.$thread['username'].'</a>
-      in <a href="list_threads.php?forum_id='.$thread['forum_id'].'">'.$thread['forum_name'].'</a>
-      on '.date('d M Y, H:i', $thread['post_date']).'
+      echo '<p><small><em>Posted by <a href="view_profile.php?username='.urlencode($thread['username']).'">'.htmlspecialchars($thread['username']).'</a>
+      in <a href="list_threads.php?forum_id='.urlencode($thread['forum_id']).'">'.htmlspecialchars($thread['forum_name']).'</a>
+      on '.date('d M Y, H:i', htmlspecialchars($thread['post_date'])).'
       </em></small></p>';
 
       if ($_SESSION['username'] === $thread['username']) {
-        echo '<a href="edit_thread_form.php?id='.$thread['thread_id'].'">Edit</a> | ';
+        echo '<a href="edit_thread_form.php?id='.urlencode($thread['thread_id']).'">Edit</a> | ';
       }
 
       if (isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin") {
-        echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.$thread['thread_id'].'">Delete</a>';
+        echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.urlencode($thread['thread_id']).'">Delete</a>';
       } else if ($_SESSION['username'] === $thread['username']) {
-        echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.$thread['thread_id'].'">Delete</a>';
+        echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.urlencode($thread['thread_id']).'">Delete</a>';
       }
 
-      echo '<p>'.nl2br(htmlentities($thread['content'])).'</p>';
+      echo '<p>'.nl2br(htmlspecialchars($thread['content'])).'</p>';
     ?>
 
     <hr style="margin: 40px 0 20px">
@@ -88,9 +88,9 @@
         echo '<ul style="list-style: none; padding-left: 0;">';
         foreach ($replies as $reply) {
           echo '<li class="reply">';
-          echo '<p><strong><a href="view_profile.php?username=' . htmlentities($reply['username']) . '">' . htmlentities($reply['username']) . '</a></strong> ';
+          echo '<p><strong><a href="view_profile.php?username=' . urlencode($reply['username']) . '">' . htmlspecialchars($reply['username']) . '</a></strong> ';
           echo '<small><em>on ' . date('d M Y, H:i', $reply['post_date']) . '</em></small></p>';
-          echo '<p>' . nl2br(htmlentities($reply['content'])) . '</p>';
+          echo '<p>' . nl2br(htmlspecialchars($reply['content'])) . '</p>';
           echo '</li>';
         }
         echo '</ul>';
@@ -102,7 +102,7 @@
     <?php
       if (isset($_SESSION['username'])) {
         echo '<form style="margin-top: 40px" name="reply_thread" method="post" action="reply.php" onsubmit="return validateForm()">
-          <input type="hidden" name="thread_id" value="' . $thread['thread_id'] . '" />
+          <input type="hidden" name="thread_id" value="' . urlencode($thread['thread_id']) . '" />
           <div style="display: flex; gap: 5px;">
             <textarea name="reply" rows="3" placeholder="Type your reply..."></textarea>
             <input type="submit" name="submit" value="Reply" />
