@@ -31,7 +31,8 @@
 
       if (isset($_SESSION['username']) && isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin") {
         echo ' | <a href="new_thread_form.php">New Thread</a> | 
-        <a href="change_access_level_form.php">Change Access Level</a>
+        <a href="change_access_level_form.php">Change Access Level</a> | 
+        <a href="view_logs.php">View Logs</a>
         </div>';
       } else if (isset($_SESSION['username'])) {
         echo ' | <a href="new_thread_form.php">New Thread</a></div>';

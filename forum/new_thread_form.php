@@ -52,7 +52,10 @@
   </head>
 
   <body>
-    <h3>New Thread</h3> 
+    <h3>New Thread</h3>
+    <?php 
+      echo '<p style="display: inline; margin-right: 10px;">Welcome, ' . $_SESSION['username'] . ' (' . $_SESSION['access_level'] . ')</p><a href="logout.php">Logout</a>';
+    ?>
     <p><a href="list_threads.php">List</a> | <a href="search_threads.php">Search</a></p>
     <form class="thread-form" name="new_thread" method="post" action="new_thread.php" onsubmit="return validateForm()">
 	

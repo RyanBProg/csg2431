@@ -62,6 +62,7 @@
     if (!$errors) {
       $stmt = $db->prepare("INSERT INTO album (title, artist, label, release_year) VALUES (?, ?, ?, ?)");
       $result = $stmt->execute([$title, $artist, $label, $release_year]);
+      logEvent($db, 'Album Added', $title.' ('.$release_year.') '.'added by '.$_SESSION['username']);
 
       if ($result) {
         $album_id = $db->lastInsertId();
@@ -76,6 +77,7 @@
               $track['duration']
             ]);
           }
+          logEvent($db, 'Tracks Added', count($valid_tracks).' tracks added for '.$title.' ('.$release_year.')');
         }
 
         header('Location: album_details.php?id=' . urlencode($album_id));
