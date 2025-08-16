@@ -13,3 +13,6 @@ password: password
 
 username: ryan123
 password: password
+
+username: fred123
+password: password

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 13, 2025 at 06:59 PM
+-- Generation Time: Aug 16, 2025 at 07:27 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -91,6 +91,47 @@ INSERT INTO `comment` (`username`, `album_id`, `content`, `created_at`, `comment
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `log`
+--
+
+CREATE TABLE `log` (
+  `log_id` int(11) NOT NULL,
+  `log_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ip_address` varchar(50) NOT NULL,
+  `event_type` varchar(50) NOT NULL,
+  `event_details` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELATIONSHIPS FOR TABLE `log`:
+--
+
+--
+-- Dumping data for table `log`
+--
+
+INSERT INTO `log` (`log_id`, `log_date`, `ip_address`, `event_type`, `event_details`) VALUES
+(1, '2025-08-15 16:40:46', '::1', 'Member Registration', 'fred123 registered as a member'),
+(2, '2025-08-15 18:49:43', '::1', 'Member Registration', 'nolan123 registered as a member'),
+(3, '2025-08-15 18:54:01', '::1', 'Logout', 'nolan123 logged out'),
+(5, '2025-08-15 18:55:04', '::1', 'Login Attempt', 'Failed login attempt with username of owienf'),
+(6, '2025-08-15 18:55:24', '::1', 'Login', 'ryan123 logged in'),
+(7, '2025-08-15 21:25:18', '::1', 'Logout', 'ryan123 logged out'),
+(8, '2025-08-15 21:25:38', '::1', 'Login', 'admin123 logged in'),
+(11, '2025-08-15 21:29:44', '::1', 'Album Deleted', 'erofp (1999) deleted by admin123'),
+(12, '2025-08-16 09:01:30', '::1', 'Album Added', 'test (1950) added by admin123'),
+(13, '2025-08-16 09:01:30', '::1', 'Tracks Added', '3 tracks added for test (1950)'),
+(14, '2025-08-16 15:37:22', '::1', 'Logout', 'ryan123 logged out'),
+(15, '2025-08-16 15:37:54', '::1', 'Login', 'fred123 logged in'),
+(16, '2025-08-16 17:10:04', '::1', 'Logout', 'fred123 logged out'),
+(17, '2025-08-16 17:10:11', '::1', 'Login', 'ryan123 logged in'),
+(18, '2025-08-16 17:17:39', '::1', 'Logout', 'ryan123 logged out'),
+(19, '2025-08-16 17:17:49', '::1', 'Login Attempt', 'Failed login attempt with username of testing@gmail.com'),
+(20, '2025-08-16 17:17:56', '::1', 'Login', 'testing logged in');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rating`
 --
 
@@ -173,7 +214,7 @@ INSERT INTO `track` (`track_id`, `album_id`, `duration_sec`, `title`, `track_no`
 
 CREATE TABLE `user` (
   `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
   `date_of_birth` date NOT NULL,
   `profile` text DEFAULT NULL,
   `email` varchar(100) NOT NULL,
@@ -194,10 +235,11 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`username`, `password`, `date_of_birth`, `profile`, `email`, `access_level`, `favourite_album_id`, `favourite_track_id`) VALUES
-('admin123', 'password', '1001-01-01', 'I\'m the friendly admin!', 'admin123@gmail.com', 'admin', NULL, NULL),
-('ryan123', 'password', '1909-08-19', 'Hi there, welcome to my profile!', 'ryan@gmail.com', 'member', NULL, NULL),
-('testing', 'password', '1909-04-21', 'hello', 'testing@gmail.com', 'member', NULL, NULL);
+INSERT INTO `user` (`username`, `password_hash`, `date_of_birth`, `profile`, `email`, `access_level`, `favourite_album_id`, `favourite_track_id`) VALUES
+('admin123', '$2y$10$FHOonII3umtI0qUedsusQeZQ1m03dPvux7PGTZa7SbyP.a84z.Z/u', '1001-01-01', 'I\'m the friendly admin!', 'admin123@gmail.com', 'admin', NULL, NULL),
+('fred123', '$2y$10$3b3XihiBCZpu1BnOPlrs/.0Y8Lia1i2NdHsj5RyH08J2ZX.mfRqj6', '1987-04-14', '', 'fred@gmail.com', 'member', 1, 21),
+('ryan123', '$2y$10$C20oexl8DjVaMHhn4UM5COhNojLxuQ5v3YMJtZgrA18IBViKPq602', '1909-08-19', 'Hi there, welcome to my profile!', 'ryan@gmail.com', 'member', 4, 14),
+('testing', '$2y$10$x4qj8jT5MmX68tvXf4Q9gOd/zmliQsyox/IbRpljadb3cA5wBZXgO', '1909-04-21', 'hello!', 'testing@gmail.com', 'member', 2, 8);
 
 --
 -- Indexes for dumped tables
@@ -217,6 +259,12 @@ ALTER TABLE `comment`
   ADD PRIMARY KEY (`comment_id`),
   ADD KEY `comment_album_fk` (`album_id`),
   ADD KEY `comment_username_fk` (`username`);
+
+--
+-- Indexes for table `log`
+--
+ALTER TABLE `log`
+  ADD PRIMARY KEY (`log_id`);
 
 --
 -- Indexes for table `rating`
@@ -251,13 +299,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `album_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `album_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
   MODIFY `comment_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `log`
+--
+ALTER TABLE `log`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `rating`
@@ -269,7 +323,7 @@ ALTER TABLE `rating`
 -- AUTO_INCREMENT for table `track`
 --
 ALTER TABLE `track`
-  MODIFY `track_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `track_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Constraints for dumped tables

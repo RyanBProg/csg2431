@@ -50,7 +50,18 @@
 ?>
 
 <main>
-  <h1><?= htmlspecialchars($album['title']) ?> (<?= $album['release_year'] ?>)</h1>
+  <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px">
+    <h1 style="margin-bottom: 0"><?= htmlspecialchars($album['title']) ?> (<?= $album['release_year'] ?>)</h1>
+    
+    <!-- favourite album button -->
+    <?php if(isset($_SESSION['username'])): ?>
+      <form action="favourite_handler.php" method="post">
+        <input type="hidden" name="album_id" value="<?= htmlspecialchars($album['album_id']) ?>">
+        <button type="submit" name="submit" style="font-size: 30px" class="favourite_button">⭐️</button>
+      </form>
+    <?php endif; ?>
+  </div>
+
   <div class="column-container">
     <section>
       <p><strong>Artist:</strong> <?= htmlspecialchars($album['artist']) ?></p>
@@ -66,9 +77,21 @@
       <?php if (!empty($album['tracks'])): ?>
         <ol class="track-list">
           <?php foreach ($album['tracks'] as $track): ?>
-            <li>
+            <li style="display: flex; gap: 6px">
               <?= htmlspecialchars($track['track_no']) ?>. <?= htmlspecialchars($track['title']) ?> 
               (<?= gmdate("i:s", $track['duration_sec']) ?>)
+
+              <!-- favourite track button -->
+              <?php if(isset($_SESSION['username'])): ?>
+                <form action="favourite_handler.php" method="post">
+                  <input type="hidden" name="track_id" value="<?= htmlspecialchars($track['track_id']) ?>">
+                  <button type="submit" name="submit" class="favourite_button">⭐️</button>
+                </form>
+              <?php endif; ?>
+
+
+
+
             </li>
           <?php endforeach; ?>
         </ol>
@@ -79,7 +102,7 @@
       <?php if(isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin"): ?>
         <form action="delete_handler.php" method="post" onsubmit="return handleDelete()">
           <input type="hidden" name="album_id" value="<?= htmlspecialchars($album['album_id']) ?>">
-          <button type="submit" class="button delete-button">Delete</button>
+          <button type="submit" name="submit" class="button delete-button">Delete</button>
         </form>
       <?php endif; ?>
     </section>

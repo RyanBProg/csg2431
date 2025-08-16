@@ -55,8 +55,8 @@
       <?php foreach ($records_data as $row): ?>
         <li>
           <a href="album_details.php?id=<?= urlencode($row['album_id']) ?>">
-            <?= htmlspecialchars($row['title']) ?>, 
-            "<?= htmlspecialchars($row['artist']) ?>" 
+            <?= htmlspecialchars($row['artist']) ?>, 
+            "<?= htmlspecialchars($row['title']) ?>" 
             (<?= htmlspecialchars($row['release_year']) ?>)
           </a>
 

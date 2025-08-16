@@ -50,7 +50,7 @@
           //print_r($stmt2->errorInfo());
         } else {
             $message = '<p class="success">Password updated!</p>';
-            $link = '<a href="user_profile.php">Go to profile</a>';
+            $link = '<a href="user_profile.php?username=' . urlencode($_SESSION['username']) . '">Go to profile</a>';
         }
       }
     } else {

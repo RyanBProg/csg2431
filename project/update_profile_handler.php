@@ -31,7 +31,7 @@
         //print_r($stmt->errorInfo());
       } else {
         $message = '<p class="success">Profile updated!</p>';
-        $link = '<a href="user_profile.php">Go to profile</a>';
+        $link = '<a href="user_profile.php?username=' . urlencode($_SESSION['username']) . '">Go to profile</a>';
       }
     } else {
       $link = '<a href="javascript: window.history.back()">Go Back</a>';
