@@ -47,7 +47,7 @@
           echo '<tr>
                   <td>' . htmlspecialchars($row['log_date'] ?? '-') . '</td>
                   <td>' . htmlspecialchars($row['event_type'] ?? '-') . '</td>
-                  <td>' . htmlspecialchars($row['ip_address'] ?? '-') . '</td>
+                  <td>' . $row['username'] . ' (' . htmlspecialchars($row['ip_address'] ?? '-') . ')' . '</td>
                   <td>' . htmlspecialchars($row['event_details'] ?? '-') . '</td>
                 </tr>';
         }
