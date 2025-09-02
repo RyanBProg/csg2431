@@ -60,13 +60,13 @@
       on '.date('d M Y, H:i', htmlspecialchars($thread['post_date'])).'
       </em></small></p>';
 
-      if ($_SESSION['username'] === $thread['username']) {
+      if (isset($_SESSION['username']) && $_SESSION['username'] === $thread['username']) {
         echo '<a href="edit_thread_form.php?id='.urlencode($thread['thread_id']).'">Edit</a> | ';
       }
 
       if (isset($_SESSION['access_level']) && $_SESSION['access_level'] === "admin") {
         echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.urlencode($thread['thread_id']).'">Delete</a>';
-      } else if ($_SESSION['username'] === $thread['username']) {
+      } else if (isset($_SESSION['username']) && $_SESSION['username'] === $thread['username']) {
         echo '<a onclick="return confirm(\'Are you sure you want to delete this thread?\')" href="delete_thread.php?id='.urlencode($thread['thread_id']).'">Delete</a>';
       }
 

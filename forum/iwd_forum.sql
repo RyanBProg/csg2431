@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 01, 2025 at 06:38 PM
+-- Generation Time: Sep 02, 2025 at 06:16 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -52,32 +52,26 @@ INSERT INTO `event_log` (`log_id`, `event_type`, `username`, `ip_address`, `log_
 (4, 'Register Account', 'lenny123', '::1', '2025-08-15 16:51:26', 'real_name: lenny | dob: 1950-05-09'),
 (5, 'Register Account', 'steve123', '::1', '2025-08-15 16:52:08', 'real_name:  | dob: 1960-04-02'),
 (6, 'Login (Failed)', NULL, '::1', '2025-08-15 17:06:29', 'username: test123'),
-(7, 'Login (Failed)', NULL, '::1', '2025-08-15 17:07:02', 'username: ryan123'),
 (8, 'Login (Successful)', 'ryan123', '::1', '2025-08-15 17:08:37', NULL),
 (9, 'Logout', 'ryan123', '::1', '2025-08-15 17:13:56', NULL),
 (10, 'Register Account', 'randy123', '::1', '2025-08-15 17:14:32', 'real_name: randy | dob: 1300-08-14'),
 (11, 'Logout', 'randy123', '::1', '2025-08-15 18:15:47', NULL),
 (12, 'Login (Successful)', 'maggie123', '::1', '2025-08-15 18:15:55', NULL),
-(13, 'Post Thread', 'maggie123', '::1', '2025-08-15 18:24:29', 'thread_id:26'),
-(14, 'Delete Thread', 'maggie123', '::1', '2025-08-15 18:24:37', 'thread_id:0'),
 (15, 'Change Access Level', 'maggie123', '::1', '2025-08-15 18:24:44', 'username: ryan123 | access_level: admin'),
-(16, 'Post Thread', 'maggie123', '::1', '2025-08-15 18:25:40', 'thread_id:27'),
-(17, 'Delete Thread', 'maggie123', '::1', '2025-08-15 18:25:51', 'thread_id:0'),
 (18, 'Logout', 'maggie123', '::1', '2025-08-15 18:25:53', NULL),
 (19, 'Login (Successful)', 'ryan123', '::1', '2025-08-15 18:26:01', NULL),
 (20, 'Logout', 'ryan123', '::1', '2025-08-15 18:26:04', NULL),
 (21, 'Register Account', 'jenny123', '::1', '2025-08-15 18:26:40', 'real_name: jen | dob: 1990-03-03'),
 (22, 'Post Thread', 'jenny123', '::1', '2025-08-15 18:26:49', 'thread_id:28'),
-(23, 'Delete Thread', 'jenny123', '::1', '2025-08-15 18:26:54', 'thread_id:0'),
 (24, 'Logout', 'jenny123', '::1', '2025-08-15 18:27:27', NULL),
 (25, 'Login (Failed)', NULL, '::1', '2025-08-15 18:27:34', 'username: rf4'),
-(27, 'Login (Successful)', 'ryan123', '::1', '2025-08-16 14:59:08', NULL),
-(28, 'Logout', 'ryan123', '::1', '2025-08-16 14:59:12', NULL),
 (29, 'Login (Successful)', 'steve123', '::1', '2025-08-16 14:59:55', NULL),
 (30, 'Logout', 'steve123', '::1', '2025-08-16 15:01:19', NULL),
-(31, 'Login (Successful)', 'ryan123', '::1', '2025-08-16 15:01:26', NULL),
-(32, 'Login (Successful)', 'ryan123', '::1', '2025-08-16 21:02:25', NULL),
-(33, 'Post Thread', 'ryan123', '::1', '2025-08-16 21:02:37', 'thread_id:29');
+(41, 'Login (Failed)', NULL, '::1', '2025-09-02 16:08:36', 'username: ryan123'),
+(42, 'Login (Successful)', 'ryan123', '::1', '2025-09-02 16:08:44', NULL),
+(43, 'Post Thread', 'ryan123', '::1', '2025-09-02 16:08:57', 'thread_id:30'),
+(44, 'Delete Thread', 'ryan123', '::1', '2025-09-02 16:09:04', 'thread_id:30'),
+(45, 'Post Thread', 'ryan123', '::1', '2025-09-02 16:14:35', 'thread_id:31');
 
 -- --------------------------------------------------------
 
@@ -195,7 +189,7 @@ INSERT INTO `thread` (`thread_id`, `username`, `forum_id`, `title`, `content`, `
 (3, 'jbloggs', 1, 'Turn your lights on when driving in the rain', 'It can be really hard to see other cars on the road, particularly grey ones, when there is heavy rain.\nSo please, turn your lights on!', '2025-08-05 08:15:44'),
 (4, 'bsmith', 2, 'Blazing Swan', 'Anyone ever been to Blazing Swan? It\'s Perth\'s \"Burning Man\" style event, held up in Kulin. Usually around late March/early April.', '2025-08-05 08:15:44'),
 (5, 'bsmith', 2, 'Perfectly normal thread', 'This not at all a test of whether this forum is vulnerable to XSS attacks.\n<script>alert(\"Hacked!\");</script>\nPlease move along.', '2025-08-05 08:15:44'),
-(29, 'ryan123', 2, 'this is a test', 'woinrf', '2025-08-16 21:02:37');
+(31, 'ryan123', 1, 'My First Post', 'Hi, I hope you enjoy what you see!', '2025-09-02 16:14:35');
 
 -- --------------------------------------------------------
 
@@ -247,7 +241,7 @@ INSERT INTO `user` (`username`, `password`, `real_name`, `dob`, `access_level`) 
 ('maggie123', '$2y$10$CusHMwVJWHxQkBWY4loNJOILnvNEb1tr93oWGdMJp9VBqSk8ANwa.', 'maggie', '1999-08-12', 'admin'),
 ('marek123', '$2y$10$CusHMwVJWHxQkBWY4loNJOILnvNEb1tr93oWGdMJp9VBqSk8ANwa.', '', '2000-08-28', 'member'),
 ('randy123', '$2y$10$FSQ3D5hPO.fjFTwLkvSRU.FCzpWHUz/z6OEoCJbHbkFN.1PY7xiNS', 'randy', '1300-08-14', 'member'),
-('ryan123', '$2y$10$CusHMwVJWHxQkBWY4loNJOILnvNEb1tr93oWGdMJp9VBqSk8ANwa.', 'ryan', '2010-08-12', 'admin'),
+('ryan123', '$2y$10$CusHMwVJWHxQkBWY4loNJOILnvNEb1tr93oWGdMJp9VBqSk8ANwa.', '', '2010-08-12', 'admin'),
 ('steve123', '$2y$10$SzH/9Agp9m5nkTwiLJuZY.ftdTosA.9YGNkAztQnD5CEi2C3Bi5X6', '', '1960-04-02', 'member');
 
 --
@@ -312,7 +306,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `event_log`
 --
 ALTER TABLE `event_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `forum`
@@ -324,7 +318,7 @@ ALTER TABLE `forum`
 -- AUTO_INCREMENT for table `reply`
 --
 ALTER TABLE `reply`
-  MODIFY `reply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `reply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tag`
@@ -336,7 +330,7 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT for table `thread`
 --
 ALTER TABLE `thread`
-  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
