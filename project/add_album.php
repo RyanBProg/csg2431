@@ -62,11 +62,10 @@
     if (!$errors) {
       $stmt = $db->prepare("INSERT INTO album (title, artist, label, release_year) VALUES (?, ?, ?, ?)");
       $result = $stmt->execute([$title, $artist, $label, $release_year]);
+      $album_id = $db->lastInsertId();
       logEvent($db, 'Album Added', $title.' ('.$release_year.') '.'added by '.$_SESSION['username']);
-
+      
       if ($result) {
-        $album_id = $db->lastInsertId();
-
         if (!empty($valid_tracks)) {
           $track_stmt = $db->prepare("INSERT INTO track (album_id, title, track_no, duration_sec) VALUES (?, ?, ?, ?)");
           foreach ($valid_tracks as $track) {

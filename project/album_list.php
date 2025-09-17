@@ -20,8 +20,9 @@
     $search_term = trim($_POST['search']);
 
     if (!empty($search_term)) {
-      $where_clause = "WHERE title LIKE :search OR artist LIKE :search";
-      $params[':search'] = "%" . $search_term . "%";
+      $where_clause = "WHERE title LIKE :search1 OR artist LIKE :search2";
+      $params[':search1'] = "%" . $search_term . "%";
+      $params[':search2'] = "%" . $search_term . "%";
     }
   }
 
